@@ -1,0 +1,54 @@
+{
+  "data": {
+    "marketplaceJobPostingsSearch": {
+      "totalCount": 987,
+      "edges": [
+        {
+          "id": 4,
+          "job": MarketplaceJobPosting,
+          "title": "xyz789",
+          "description": "abc123",
+          "ciphertext": "abc123",
+          "duration": "WEEK",
+          "durationLabel": "xyz789",
+          "engagement": "abc123",
+          "amount": Money,
+          "recordNumber": "abc123",
+          "experienceLevel": "NONE",
+          "category": "xyz789",
+          "subcategory": "xyz789",
+          "freelancersToHire": 123,
+          "relevance": MarketplaceJobPostingSearchRelevance,
+          "enterprise": true,
+          "relevanceEncoded": "abc123",
+          "totalApplicants": 123,
+          "preferredFreelancerLocation": ["abc123"],
+          "preferredFreelancerLocationMandatory": false,
+          "premium": true,
+          "clientNotSureFields": ["xyz789"],
+          "clientPrivateFields": ["xyz789"],
+          "applied": false,
+          "createdDateTime": "abc123",
+          "publishedDateTime": "xyz789",
+          "renewedDateTime": "xyz789",
+          "client": MarketplaceJobPostingSearchClientInfo,
+          "skills": [MarketplaceJobPostingSearchSkill],
+          "occupations": MarketplaceJobPostingSearchOccupations,
+          "hourlyBudgetType": "DEFAULT",
+          "hourlyBudgetMin": Money,
+          "hourlyBudgetMax": Money,
+          "localJobUserDistance": "abc123",
+          "weeklyBudget": Money,
+          "engagementDuration": EngagementDuration,
+          "totalFreelancersToHire": 987,
+          "teamId": "4",
+          "freelancerClientRelation": FreelancerClientRelation
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "abc123"
+      }
+    }
+  }
+}

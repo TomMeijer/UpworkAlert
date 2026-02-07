@@ -1,0 +1,105 @@
+query {
+    marketplaceJobPostingsSearch(
+        marketPlaceJobFilter: {
+          searchExpression_eq: abc123
+          skillExpression_eq: abc123
+          titleExpression_eq: xyz789
+          searchTerm_eq: {
+            andTerms_all: [abc123]
+            orTerms_any: [abc123]
+            exactTerms_any: [xyz789]
+            excludeTerms_any: [abc123]
+          }
+          categoryIds_any: [4]
+          subcategoryIds_any: [4]
+          occupationIds_any: [4]
+          ontologySkillIds_all: [4]
+          jobType_eq: HOURLY
+          workload_eq: FULL_TIME
+          clientHiresRange_eq: {
+            rangeStart: 987
+            rangeEnd: 987
+          }
+          budgetRange_eq: {
+            rangeStart: 987
+            rangeEnd: 987
+          }
+          hourlyRate_eq: {
+            rangeStart: 987
+            rangeEnd: 987
+          }
+          verifiedPaymentOnly_eq: true
+          previousClients_eq: true
+          experienceLevel_eq: ENTRY_LEVEL
+          locations_any: [abc123]
+          timezone_eq: abc123
+          ptcIds_any: [4]
+          ptcOnly_eq: false
+          enterpriseOnly_eq: false
+          proposalRange_eq: {
+            rangeStart: 987
+            rangeEnd: 987
+          }
+          pagination_eq: {
+            after: abc123
+            first: 987
+          }
+          area_eq: {
+            latitude: 123.45
+            longitude: 123.45
+            radius: 123.45
+          }
+          preserveFacet_eq: abc123
+          userLocationMatch_eq: true
+          visitorCountry_eq: xyz789
+        }
+        searchType: USER_JOBS_SEARCH
+        sortAttributes: {
+            field: RECENCY
+        }
+    ) {
+        totalCount
+        edges {
+            node {
+                id
+                title
+                description
+                ciphertext
+                publishedDateTime,
+                amount {
+                    rawValue
+                    currency
+                    displayValue
+                }
+                hourlyBudgetType
+                hourlyBudgetMin {
+                    rawValue
+                    currency
+                    displayValue
+                }
+                hourlyBudgetMax {
+                    rawValue
+                    currency
+                    displayValue
+                }
+                weeklyBudget {
+                    rawValue
+                    currency
+                    displayValue
+                }
+                client {
+                    location {
+                        country
+                    }
+                }
+                skills {
+                    name
+                }
+            }
+        }
+        pageInfo {
+            hasNextPage
+            endCursor
+        }
+    }
+}
