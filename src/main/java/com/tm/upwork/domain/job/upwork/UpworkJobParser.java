@@ -1,5 +1,6 @@
-package com.tm.upwork.domain.job;
+package com.tm.upwork.domain.job.upwork;
 
+import com.tm.upwork.domain.job.Job;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -1,7 +1,8 @@
-package com.tm.upwork.domain.job;
+package com.tm.upwork.domain.job.upwork;
 
 import com.Upwork.api.OAuthClient;
 import com.Upwork.api.Routers.Graphql;
+import com.tm.upwork.domain.job.Job;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
@@ -81,7 +82,7 @@ class UpworkJobServiceTest {
                 })) {
 
             // When & Then
-            assertThrows(JSONException.class, () -> {
+            assertThrows(IllegalStateException.class, () -> {
                 upworkJobService.fetchNewJobs();
             });
 

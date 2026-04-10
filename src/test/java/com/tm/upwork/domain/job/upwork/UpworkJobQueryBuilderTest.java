@@ -1,4 +1,4 @@
-package com.tm.upwork.domain.job;
+package com.tm.upwork.domain.job.upwork;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -6,8 +6,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class UpworkJobQueryBuilderTest {
 
@@ -29,8 +28,8 @@ class UpworkJobQueryBuilderTest {
 
     @Test
     void buildQuery_AllCriteriaSet() {
-        ReflectionTestUtils.setField(queryBuilder, "minHourlyRate", 20.0);
-        ReflectionTestUtils.setField(queryBuilder, "minFixedPrice", 500.0);
+        ReflectionTestUtils.setField(queryBuilder, "minHourlyRate", "20");
+        ReflectionTestUtils.setField(queryBuilder, "minFixedPrice", "500");
         ReflectionTestUtils.setField(queryBuilder, "categoryIds", List.of("123", "456"));
         ReflectionTestUtils.setField(queryBuilder, "locations", List.of("US", "UK"));
         ReflectionTestUtils.setField(queryBuilder, "searchExpression", "java spring");
@@ -52,15 +51,15 @@ class UpworkJobQueryBuilderTest {
         String query = queryBuilder.buildQuery();
 
         assertTrue(query.contains("searchExpression_eq: \"python\""));
-        assertTrue(!query.contains("categoryIds_any"));
-        assertTrue(!query.contains("locations_any"));
-        assertTrue(!query.contains("budgetRange_eq"));
-        assertTrue(!query.contains("hourlyRate_eq"));
+        assertFalse(query.contains("categoryIds_any"));
+        assertFalse(query.contains("locations_any"));
+        assertFalse(query.contains("budgetRange_eq"));
+        assertFalse(query.contains("hourlyRate_eq"));
     }
 
     @Test
     void buildQuery_OnlyMinFixedPrice() {
-        ReflectionTestUtils.setField(queryBuilder, "minFixedPrice", 1000.0);
+        ReflectionTestUtils.setField(queryBuilder, "minFixedPrice", "1000");
 
         String query = queryBuilder.buildQuery();
 
@@ -69,7 +68,7 @@ class UpworkJobQueryBuilderTest {
 
     @Test
     void buildQuery_OnlyMinHourlyRate() {
-        ReflectionTestUtils.setField(queryBuilder, "minHourlyRate", 50.0);
+        ReflectionTestUtils.setField(queryBuilder, "minHourlyRate", "50");
 
         String query = queryBuilder.buildQuery();
 

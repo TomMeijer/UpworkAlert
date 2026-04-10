@@ -1,4 +1,4 @@
-package com.tm.upwork.domain.job;
+package com.tm.upwork.domain.job.upwork;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -9,10 +9,10 @@ import java.util.List;
 public class UpworkJobQueryBuilder {
 
     @Value("${search.criteria.min-hourly-rate}")
-    private Double minHourlyRate;
+    private String minHourlyRate;
 
     @Value("${search.criteria.min-fixed-price}")
-    private Double minFixedPrice;
+    private String minFixedPrice;
 
     @Value("${search.criteria.category-ids}")
     private List<String> categoryIds;
@@ -34,11 +34,11 @@ public class UpworkJobQueryBuilder {
         if (locations != null && !locations.isEmpty()) {
             filterBuilder.append(String.format("locations_any: [%s] ", String.join(",", locations)));
         }
-        if (minFixedPrice != null) {
-            filterBuilder.append(String.format("budgetRange_eq: { rangeStart: %d } ", minFixedPrice.intValue()));
+        if (minFixedPrice != null && !minFixedPrice.isEmpty()) {
+            filterBuilder.append(String.format("budgetRange_eq: { rangeStart: %s } ", minFixedPrice));
         }
-        if (minHourlyRate != null) {
-            filterBuilder.append(String.format("hourlyRate_eq: { rangeStart: %d } ", minHourlyRate.intValue()));
+        if (minHourlyRate != null && !minHourlyRate.isEmpty()) {
+            filterBuilder.append(String.format("hourlyRate_eq: { rangeStart: %s } ", minHourlyRate));
         }
         return "query {" +
                 "  marketplaceJobPostingsSearch(" +

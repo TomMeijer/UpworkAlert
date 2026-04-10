@@ -2,8 +2,8 @@ package com.tm.upwork.domain.alert;
 
 import com.google.common.collect.EvictingQueue;
 import com.tm.upwork.domain.job.Job;
+import com.tm.upwork.domain.job.JobService;
 import com.tm.upwork.email.EmailService;
-import com.tm.upwork.domain.job.UpworkJobService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,7 +17,7 @@ import java.util.Queue;
 @RequiredArgsConstructor
 public class JobAlertTask {
 
-    private final UpworkJobService jobService;
+    private final JobService jobService;
     private final EmailService emailService;
     private final Queue<String> processedJobIds = EvictingQueue.create(1000);
 

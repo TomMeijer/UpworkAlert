@@ -1,5 +1,6 @@
-package com.tm.upwork.domain.job;
+package com.tm.upwork.domain.job.upwork;
 
+import com.tm.upwork.domain.job.Job;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

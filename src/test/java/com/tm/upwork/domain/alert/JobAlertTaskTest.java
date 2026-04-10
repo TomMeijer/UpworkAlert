@@ -1,9 +1,8 @@
 package com.tm.upwork.domain.alert;
 
 import com.tm.upwork.domain.job.Job;
-import com.tm.upwork.domain.job.UpworkJobService;
+import com.tm.upwork.domain.job.JobService;
 import com.tm.upwork.email.EmailService;
-import org.json.JSONException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,7 +11,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
 
@@ -25,7 +23,7 @@ import static org.mockito.Mockito.*;
 class JobAlertTaskTest {
 
     @Mock
-    private UpworkJobService jobService;
+    private JobService jobService;
 
     @Mock
     private EmailService emailService;
@@ -48,7 +46,7 @@ class JobAlertTaskTest {
     }
 
     @Test
-    void checkForNewJobs_shouldSendEmailForNewJobs() throws JSONException {
+    void checkForNewJobs_shouldSendEmailForNewJobs() {
         // Given
         when(jobService.fetchNewJobs()).thenReturn(List.of(job1, job2));
 
@@ -62,7 +60,7 @@ class JobAlertTaskTest {
     }
 
     @Test
-    void checkForNewJobs_shouldNotSendEmailForAlreadyProcessedJobs() throws JSONException {
+    void checkForNewJobs_shouldNotSendEmailForAlreadyProcessedJobs() {
         // Given
         when(jobService.fetchNewJobs()).thenReturn(List.of(job1));
 
@@ -79,7 +77,7 @@ class JobAlertTaskTest {
     }
 
     @Test
-    void checkForNewJobs_shouldEvictOldestWhenLimitExceeded() throws JSONException {
+    void checkForNewJobs_shouldEvictOldestWhenLimitExceeded() {
         // Given
         Queue<String> processedJobIds = (Queue<String>) ReflectionTestUtils.getField(jobAlertTask, "processedJobIds");
         for (int i = 0; i < 1000; i++) {
@@ -101,7 +99,7 @@ class JobAlertTaskTest {
     }
 
     @Test
-    void checkForNewJobs_shouldHandleExceptionsGracefully() throws JSONException {
+    void checkForNewJobs_shouldHandleExceptionsGracefully() {
         // Given
         when(jobService.fetchNewJobs()).thenThrow(new RuntimeException("API Error"));
 
