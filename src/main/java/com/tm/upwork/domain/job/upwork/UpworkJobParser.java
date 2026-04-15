@@ -40,6 +40,7 @@ public class UpworkJobParser {
                 job.setUrl("https://www.upwork.com/jobs/" + ciphertext);
             }
             job.setPublishedOn(node.optString("publishedDateTime"));
+            job.setExperienceLevel(node.optString("experienceLevel"));
 
             // Price handling
             if (!node.isNull("amount")) {
@@ -65,12 +66,17 @@ public class UpworkJobParser {
                 }
             }
 
-            // Client Country
+            // Client and Payment Handling
             if (!node.isNull("client")) {
                 JSONObject client = node.getJSONObject("client");
                 if (!client.isNull("location")) {
                     JSONObject location = client.getJSONObject("location");
                     job.setClientCountry(location.optString("country"));
+                }
+                job.setPaymentVerified("VERIFIED".equalsIgnoreCase(client.optString("verificationStatus")));
+                job.setClientRating(client.optDouble("totalFeedback"));
+                if (!client.isNull("totalSpent")) {
+                    job.setClientTotalSpent(client.getJSONObject("totalSpent").optDouble("rawValue"));
                 }
             }
 

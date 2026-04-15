@@ -16,6 +16,10 @@ public class Job {
     private List<String> requiredSkills;
     private String url;
     private String publishedOn;
+    private String experienceLevel;
+    private boolean paymentVerified;
+    private Double clientRating;
+    private Double clientTotalSpent;
 
     public String getPriceString() {
         if (type == JobType.FIXED) {

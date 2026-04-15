@@ -30,6 +30,10 @@ class ApifyJobParserTest {
         apifyJob.setTags(List.of("Java", "Spring"));
         apifyJob.setJobType("Fixed");
         apifyJob.setBudget("$500");
+        apifyJob.setExperienceLevel("Expert");
+        apifyJob.setPaymentVerified(true);
+        apifyJob.setClientRating(4.5);
+        apifyJob.setClientTotalSpent(1000.0);
 
         Job job = parser.mapToJob(apifyJob);
 
@@ -42,7 +46,25 @@ class ApifyJobParserTest {
         assertEquals(List.of("Java", "Spring"), job.getRequiredSkills());
         assertEquals(JobType.FIXED, job.getType());
         assertEquals(500.0, job.getFixedPrice());
+        assertEquals("Expert", job.getExperienceLevel());
+        assertTrue(job.isPaymentVerified());
+        assertEquals(4.5, job.getClientRating());
+        assertEquals(1000.0, job.getClientTotalSpent());
         assertNull(job.getHourlyRateMin());
+    }
+
+    @Test
+    void testMapToJob_PaymentVerifiedString() {
+        ApifyJob apifyJob = new ApifyJob();
+        apifyJob.setPaymentVerified("VERIFIED");
+
+        Job job = parser.mapToJob(apifyJob);
+
+        assertTrue(job.isPaymentVerified());
+
+        apifyJob.setPaymentVerified("NOT_VERIFIED");
+        job = parser.mapToJob(apifyJob);
+        assertFalse(job.isPaymentVerified());
     }
 
     @Test

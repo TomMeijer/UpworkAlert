@@ -58,6 +58,7 @@ class UpworkJobParserTest {
         node.put("description", "Test Description");
         node.put("ciphertext", "~0123456789abcdef");
         node.put("publishedDateTime", "2023-10-27T10:00:00Z");
+        node.put("experienceLevel", "EXPERT");
 
         JSONObject amount = new JSONObject();
         amount.put("rawValue", 500.0);
@@ -67,6 +68,11 @@ class UpworkJobParserTest {
         JSONObject location = new JSONObject();
         location.put("country", "United States");
         client.put("location", location);
+        client.put("verificationStatus", "VERIFIED");
+        client.put("totalFeedback", 4.8);
+        JSONObject totalSpent = new JSONObject();
+        totalSpent.put("rawValue", 2000.0);
+        client.put("totalSpent", totalSpent);
         node.put("client", client);
 
         JSONArray skills = new JSONArray();
@@ -92,9 +98,13 @@ class UpworkJobParserTest {
         assertEquals("Test Description", job.getDescription());
         assertEquals("https://www.upwork.com/jobs/~0123456789abcdef", job.getUrl());
         assertEquals("2023-10-27T10:00:00Z", job.getPublishedOn());
+        assertEquals("EXPERT", job.getExperienceLevel());
         assertEquals(JobType.FIXED, job.getType());
         assertEquals(500.0, job.getFixedPrice());
         assertEquals("United States", job.getClientCountry());
+        assertTrue(job.isPaymentVerified());
+        assertEquals(4.8, job.getClientRating());
+        assertEquals(2000.0, job.getClientTotalSpent());
         assertEquals(1, job.getRequiredSkills().size());
         assertEquals("Java", job.getRequiredSkills().get(0));
     }

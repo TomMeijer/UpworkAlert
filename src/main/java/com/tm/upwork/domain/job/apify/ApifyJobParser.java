@@ -24,6 +24,16 @@ public class ApifyJobParser {
         job.setPublishedOn(apifyJob.getAbsoluteDate());
         job.setClientCountry(apifyJob.getClientLocation());
         job.setRequiredSkills(apifyJob.getTags());
+        job.setExperienceLevel(apifyJob.getExperienceLevel());
+        job.setClientRating(apifyJob.getClientRating());
+        job.setClientTotalSpent(apifyJob.getClientTotalSpent());
+
+        if (apifyJob.getPaymentVerified() instanceof Boolean paymentVerifiedBool) {
+            job.setPaymentVerified(paymentVerifiedBool);
+        } else if (apifyJob.getPaymentVerified() instanceof String paymentVerifiedString) {
+            job.setPaymentVerified("VERIFIED".equalsIgnoreCase(paymentVerifiedString));
+        }
+
         if ("Fixed".equals(apifyJob.getJobType())) {
             job.setType(JobType.FIXED);
             if (apifyJob.getBudget() != null && !apifyJob.getBudget().isEmpty()) {

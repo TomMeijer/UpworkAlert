@@ -12,7 +12,11 @@
           "duration": "WEEK",
           "durationLabel": "xyz789",
           "engagement": "abc123",
-          "amount": Money,
+          "amount": {
+            "rawValue": "abc123",
+            "currency": "abc123",
+            "displayValue": "xyz789"
+          },
           "recordNumber": "abc123",
           "experienceLevel": "NONE",
           "category": "xyz789",
@@ -31,14 +35,53 @@
           "createdDateTime": "abc123",
           "publishedDateTime": "xyz789",
           "renewedDateTime": "xyz789",
-          "client": MarketplaceJobPostingSearchClientInfo,
+          "client": {
+            "memberSinceDateTime": "xyz789",
+            "totalHires": 987,
+            "totalPostedJobs": 123,
+            "totalSpent": {
+              "rawValue": "abc123",
+              "currency": "abc123",
+              "displayValue": "xyz789"
+            },
+            "verificationStatus": "VERIFIED",
+            "location": {
+              "city": "abc123",
+              "country": "xyz789",
+              "timezone": "abc123",
+              "state": "xyz789",
+              "offsetToUTC": "xyz789"
+            },
+            "totalReviews": 123,
+            "totalFeedback": 123.45,
+            "companyRid": "4",
+            "companyName": "xyz789",
+            "edcUserId": 4,
+            "lastContractPlatform": "xyz789",
+            "lastContractRid": 4,
+            "lastContractTitle": "xyz789",
+            "companyOrgUid": "4",
+            "hasFinancialPrivacy": false
+          },
           "skills": [MarketplaceJobPostingSearchSkill],
           "occupations": MarketplaceJobPostingSearchOccupations,
           "hourlyBudgetType": "DEFAULT",
-          "hourlyBudgetMin": Money,
-          "hourlyBudgetMax": Money,
+          "hourlyBudgetMin": {
+            "rawValue": "abc123",
+            "currency": "abc123",
+            "displayValue": "xyz789"
+          },
+          "hourlyBudgetMax": {
+            "rawValue": "abc123",
+            "currency": "abc123",
+            "displayValue": "xyz789"
+          },
           "localJobUserDistance": "abc123",
-          "weeklyBudget": Money,
+          "weeklyBudget": {
+            "rawValue": "abc123",
+            "currency": "abc123",
+            "displayValue": "xyz789"
+          },
           "engagementDuration": EngagementDuration,
           "totalFreelancersToHire": 987,
           "teamId": "4",
