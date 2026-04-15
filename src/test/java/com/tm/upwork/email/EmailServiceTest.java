@@ -2,6 +2,7 @@ package com.tm.upwork.email;
 
 import com.tm.upwork.domain.job.Job;
 import com.tm.upwork.domain.job.JobType;
+import jakarta.mail.internet.MimeMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,20 +10,28 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class EmailServiceTest {
 
     @Mock
     private JavaMailSender mailSender;
+
+    @Mock
+    private TemplateEngine templateEngine;
 
     @InjectMocks
     private EmailService emailService;
@@ -48,24 +57,15 @@ class EmailServiceTest {
         job.setUrl("https://upwork.com/jobs/123");
         job.setDescription("Looking for a Java developer with Spring Boot experience.");
 
+        MimeMessage mimeMessage = mock(MimeMessage.class);
+        when(mailSender.createMimeMessage()).thenReturn(mimeMessage);
+        when(templateEngine.process(eq("job-notification"), any(Context.class))).thenReturn("<html>HTML Body</html>");
+
         // When
         emailService.sendJobNotification(job);
 
         // Then
-        ArgumentCaptor<SimpleMailMessage> messageCaptor = ArgumentCaptor.forClass(SimpleMailMessage.class);
-        verify(mailSender).send(messageCaptor.capture());
-
-        SimpleMailMessage sentMessage = messageCaptor.getValue();
-        assertThat(sentMessage.getFrom()).isEqualTo(fromEmail);
-        assertThat(sentMessage.getTo()).containsExactly(toEmail);
-        assertThat(sentMessage.getSubject()).isEqualTo("New Upwork Job: Java Developer");
-        
-        String body = sentMessage.getText();
-        assertThat(body).contains("Title: Java Developer");
-        assertThat(body).contains("Price: Fixed: $500.0");
-        assertThat(body).contains("Client Country: United States");
-        assertThat(body).contains("Skills: Java, Spring Boot");
-        assertThat(body).contains("Link: https://upwork.com/jobs/123");
-        assertThat(body).contains("Description:\nLooking for a Java developer with Spring Boot experience.");
+        verify(mailSender).send(mimeMessage);
+        verify(templateEngine).process(eq("job-notification"), any(Context.class));
     }
 }

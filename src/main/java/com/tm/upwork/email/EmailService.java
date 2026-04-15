@@ -1,17 +1,24 @@
 package com.tm.upwork.email;
 
 import com.tm.upwork.domain.job.Job;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+
+import java.nio.charset.StandardCharsets;
 
 @Service
 @RequiredArgsConstructor
 public class EmailService {
 
     private final JavaMailSender mailSender;
+    private final TemplateEngine templateEngine;
 
     @Value("${spring.mail.from}")
     private String from;
@@ -20,28 +27,28 @@ public class EmailService {
     private String to;
 
     public void sendJobNotification(Job job) {
-        var message = new SimpleMailMessage();
-        message.setFrom(from);
-        message.setTo(to);
-        message.setSubject("New Upwork Job: " + job.getTitle());
-        message.setText(buildEmailBody(job));
-        mailSender.send(message);
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(
+                    message,
+                    MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
+                    StandardCharsets.UTF_8.name()
+            );
+
+            helper.setFrom(from);
+            helper.setTo(to);
+            helper.setSubject("New job: " + job.getTitle());
+            helper.setText(buildEmailBody(job), true);
+
+            mailSender.send(message);
+        } catch (MessagingException e) {
+            throw new IllegalStateException("Failed to send email", e);
+        }
     }
 
     private String buildEmailBody(Job job) {
-        return String.format(
-                "Title: %s\n" +
-                "Price: %s\n" +
-                "Client Country: %s\n" +
-                "Skills: %s\n" +
-                "Link: %s\n\n" +
-                "Description:\n%s",
-                job.getTitle(),
-                job.getPriceString(),
-                job.getClientCountry(),
-                String.join(", ", job.getRequiredSkills()),
-                job.getUrl(),
-                job.getDescription()
-        );
+        Context context = new Context();
+        context.setVariable("job", job);
+        return templateEngine.process("job-notification", context);
     }
 }
