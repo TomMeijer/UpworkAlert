@@ -40,6 +40,8 @@ public class UpworkJobQueryBuilder {
         if (minHourlyRate != null && !minHourlyRate.isEmpty()) {
             filterBuilder.append(String.format("hourlyRate_eq: { rangeStart: %s } ", minHourlyRate));
         }
+        filterBuilder.append(String.format("pagination_eq: { after: \"0\", first: %d } ", 50));
+
         return "query {" +
                 "  marketplaceJobPostingsSearch(" +
                 "    marketPlaceJobFilter: {" + filterBuilder + "}" +
@@ -60,6 +62,10 @@ public class UpworkJobQueryBuilder {
                 "        client { location { country } }" +
                 "        skills { name }" +
                 "      }" +
+                "    }" +
+                "    pageInfo {" +
+                "      hasNextPage" +
+                "      endCursor" +
                 "    }" +
                 "  }" +
                 "}";

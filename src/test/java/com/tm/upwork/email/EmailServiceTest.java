@@ -1,6 +1,7 @@
 package com.tm.upwork.email;
 
 import com.tm.upwork.domain.job.Job;
+import com.tm.upwork.domain.job.JobType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,6 +41,7 @@ class EmailServiceTest {
         // Given
         Job job = new Job();
         job.setTitle("Java Developer");
+        job.setType(JobType.FIXED);
         job.setFixedPrice(500.0);
         job.setClientCountry("United States");
         job.setRequiredSkills(List.of("Java", "Spring Boot"));
@@ -60,7 +62,7 @@ class EmailServiceTest {
         
         String body = sentMessage.getText();
         assertThat(body).contains("Title: Java Developer");
-        assertThat(body).contains("Price: $500.0 (Fixed)");
+        assertThat(body).contains("Price: Fixed: $500.0");
         assertThat(body).contains("Client Country: United States");
         assertThat(body).contains("Skills: Java, Spring Boot");
         assertThat(body).contains("Link: https://upwork.com/jobs/123");

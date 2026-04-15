@@ -8,7 +8,9 @@ public class Job {
     private String id;
     private String title;
     private String description;
-    private Double hourlyRate;
+    private JobType type;
+    private Double hourlyRateMin;
+    private Double hourlyRateMax;
     private Double fixedPrice;
     private String clientCountry;
     private List<String> requiredSkills;
@@ -16,10 +18,14 @@ public class Job {
     private String publishedOn;
 
     public String getPriceString() {
-        if (fixedPrice != null) {
-            return "$" + fixedPrice + " (Fixed)";
-        } else if (hourlyRate != null) {
-            return "$" + hourlyRate + "/hr";
+        if (type == JobType.FIXED) {
+            return "Fixed: $" + fixedPrice;
+        } else if (type == JobType.HOURLY) {
+            var hourlyString = "Hourly: $" + hourlyRateMin;
+            if (hourlyRateMax != null) {
+                hourlyString += " - $" + hourlyRateMax;
+            }
+            return hourlyString;
         }
         return "Not specified";
     }

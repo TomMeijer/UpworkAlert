@@ -1,6 +1,7 @@
 package com.tm.upwork.domain.job.upwork;
 
 import com.tm.upwork.domain.job.Job;
+import com.tm.upwork.domain.job.JobType;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -91,6 +92,7 @@ class UpworkJobParserTest {
         assertEquals("Test Description", job.getDescription());
         assertEquals("https://www.upwork.com/jobs/~0123456789abcdef", job.getUrl());
         assertEquals("2023-10-27T10:00:00Z", job.getPublishedOn());
+        assertEquals(JobType.FIXED, job.getType());
         assertEquals(500.0, job.getFixedPrice());
         assertEquals("United States", job.getClientCountry());
         assertEquals(1, job.getRequiredSkills().size());
@@ -107,9 +109,13 @@ class UpworkJobParserTest {
         JSONObject node = new JSONObject();
         node.put("id", "456");
 
-        JSONObject hourlyBudget = new JSONObject();
-        hourlyBudget.put("rawValue", 25.0);
-        node.put("hourlyBudgetMin", hourlyBudget);
+        JSONObject hourlyBudgetMin = new JSONObject();
+        hourlyBudgetMin.put("rawValue", 25.0);
+        node.put("hourlyBudgetMin", hourlyBudgetMin);
+
+        JSONObject hourlyBudgetMax = new JSONObject();
+        hourlyBudgetMax.put("rawValue", 50.0);
+        node.put("hourlyBudgetMax", hourlyBudgetMax);
 
         JSONObject edge = new JSONObject();
         edge.put("node", node);
@@ -123,7 +129,10 @@ class UpworkJobParserTest {
 
         assertEquals(1, jobs.size());
         Job job = jobs.get(0);
-        assertEquals(25.0, job.getHourlyRate());
+
+        assertEquals(JobType.HOURLY, job.getType());
+        assertEquals(25.0, job.getHourlyRateMin());
+        assertEquals(50.0, job.getHourlyRateMax());
         assertNull(job.getFixedPrice());
     }
 
@@ -154,7 +163,8 @@ class UpworkJobParserTest {
         assertEquals("", job.getTitle()); // optString returns "" by default
         assertNull(job.getUrl());
         assertNull(job.getFixedPrice());
-        assertNull(job.getHourlyRate());
+        assertNull(job.getHourlyRateMin());
+        assertNull(job.getHourlyRateMax());
         assertNull(job.getClientCountry());
         assertNull(job.getRequiredSkills());
     }

@@ -1,6 +1,7 @@
 package com.tm.upwork.domain.job.apify;
 
 import com.tm.upwork.domain.job.Job;
+import com.tm.upwork.domain.job.JobType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -39,8 +40,9 @@ class ApifyJobParserTest {
         assertEquals("2023-10-27T10:00:00Z", job.getPublishedOn());
         assertEquals("United States", job.getClientCountry());
         assertEquals(List.of("Java", "Spring"), job.getRequiredSkills());
+        assertEquals(JobType.FIXED, job.getType());
         assertEquals(500.0, job.getFixedPrice());
-        assertNull(job.getHourlyRate());
+        assertNull(job.getHourlyRateMin());
     }
 
     @Test
@@ -53,7 +55,9 @@ class ApifyJobParserTest {
         Job job = parser.mapToJob(apifyJob);
 
         assertEquals("456", job.getId());
-        assertEquals(25.0, job.getHourlyRate());
+        assertEquals(JobType.HOURLY, job.getType());
+        assertEquals(25.0, job.getHourlyRateMin());
+        assertEquals(50.0, job.getHourlyRateMax());
         assertNull(job.getFixedPrice());
     }
 
@@ -65,7 +69,9 @@ class ApifyJobParserTest {
 
         Job job = parser.mapToJob(apifyJob);
 
-        assertEquals(30.0, job.getHourlyRate());
+        assertEquals(JobType.HOURLY, job.getType());
+        assertEquals(30.0, job.getHourlyRateMin());
+        assertNull(job.getHourlyRateMax());
     }
 
     @Test

@@ -10,7 +10,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -39,7 +43,7 @@ class ApifyJobServiceTest {
         job.setId("123");
         List<Job> expectedJobs = List.of(job);
 
-        when(apifyInputBuilder.build()).thenReturn(input);
+        when(apifyInputBuilder.build(null)).thenReturn(input);
         when(apifyJobClient.runSyncGetDatasetItems(input)).thenReturn(apifyJobs);
         when(apifyJobParser.parseJobs(apifyJobs)).thenReturn(expectedJobs);
 
@@ -48,8 +52,26 @@ class ApifyJobServiceTest {
 
         // Then
         assertEquals(expectedJobs, result);
-        verify(apifyInputBuilder).build();
+        verify(apifyInputBuilder).build(null);
         verify(apifyJobClient).runSyncGetDatasetItems(input);
         verify(apifyJobParser).parseJobs(apifyJobs);
+    }
+
+    @Test
+    void fetchNewJobs_ShouldIncludeMaxJobAgeInSecondCall() {
+        // Given
+        ApifyInput input1 = ApifyInput.builder().build();
+        ApifyInput input2 = ApifyInput.builder().build();
+
+        when(apifyInputBuilder.build(null)).thenReturn(input1);
+        when(apifyInputBuilder.build(any())).thenReturn(input2);
+
+        // When
+        apifyJobService.fetchNewJobs(); // First call, lastRetrievalTime is set
+        apifyJobService.fetchNewJobs(); // Second call, should have maxJobAge
+
+        // Then
+        verify(apifyInputBuilder).build(null);
+        verify(apifyInputBuilder).build(argThat(map -> map != null && "minutes".equals(map.get("unit"))));
     }
 }

@@ -6,7 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Primary
@@ -16,9 +19,18 @@ public class ApifyJobService implements JobService {
     private final ApifyJobParser apifyJobParser;
     private final ApifyInputBuilder apifyInputBuilder;
 
+    private Instant lastRetrievalTime;
+
     @Override
     public List<Job> fetchNewJobs() {
-        ApifyInput input = apifyInputBuilder.build();
+        Map<String, Object> maxJobAge = null;
+        Instant now = Instant.now();
+        if (lastRetrievalTime != null) {
+            long minutes = Duration.between(lastRetrievalTime, now).toMinutes();
+            maxJobAge = Map.of("value", minutes + 1, "unit", "minutes");
+        }
+        lastRetrievalTime = now;
+        ApifyInput input = apifyInputBuilder.build(maxJobAge);
         List<ApifyJob> apifyJobs = apifyJobClient.runSyncGetDatasetItems(input);
         return apifyJobParser.parseJobs(apifyJobs);
     }

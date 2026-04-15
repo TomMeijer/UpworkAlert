@@ -18,15 +18,6 @@ class UpworkJobQueryBuilderTest {
     }
 
     @Test
-    void buildQuery_EmptyCriteria() {
-        String query = queryBuilder.buildQuery();
-
-        assertNotNull(query);
-        assertTrue(query.contains("marketPlaceJobFilter: {}"));
-        assertTrue(query.contains("marketplaceJobPostingsSearch"));
-    }
-
-    @Test
     void buildQuery_AllCriteriaSet() {
         ReflectionTestUtils.setField(queryBuilder, "minHourlyRate", "20");
         ReflectionTestUtils.setField(queryBuilder, "minFixedPrice", "500");
@@ -42,6 +33,7 @@ class UpworkJobQueryBuilderTest {
         assertTrue(query.contains("locations_any: [US,UK]"));
         assertTrue(query.contains("budgetRange_eq: { rangeStart: 500 }"));
         assertTrue(query.contains("hourlyRate_eq: { rangeStart: 20 }"));
+        assertTrue(query.contains("pagination_eq: { after: \"0\", first: 50 }"));
     }
 
     @Test

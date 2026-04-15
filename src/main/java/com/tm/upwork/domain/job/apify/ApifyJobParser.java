@@ -1,6 +1,7 @@
 package com.tm.upwork.domain.job.apify;
 
 import com.tm.upwork.domain.job.Job;
+import com.tm.upwork.domain.job.JobType;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -23,14 +24,19 @@ public class ApifyJobParser {
         job.setPublishedOn(apifyJob.getAbsoluteDate());
         job.setClientCountry(apifyJob.getClientLocation());
         job.setRequiredSkills(apifyJob.getTags());
-
-        if (apifyJob.getBudget() != null) {
-            if ("Fixed".equals(apifyJob.getJobType())) {
+        if ("Fixed".equals(apifyJob.getJobType())) {
+            job.setType(JobType.FIXED);
+            if (apifyJob.getBudget() != null && !apifyJob.getBudget().isEmpty()) {
                 job.setFixedPrice(Double.parseDouble(apifyJob.getBudget().replaceAll("[^\\d.]", "")));
-            } else if ("Hourly".equals(apifyJob.getJobType())) {
-                // Budget might be a range like "$20 - $50" or "$20"
-                String numericPart = apifyJob.getBudget().split("-")[0].replaceAll("[^\\d.]", "");
-                job.setHourlyRate(Double.parseDouble(numericPart));
+            }
+        } else if ("Hourly".equals(apifyJob.getJobType())) {
+            job.setType(JobType.HOURLY);
+            if (apifyJob.getBudget() != null && !apifyJob.getBudget().isEmpty()) {
+                String[] range = apifyJob.getBudget().split("-");
+                job.setHourlyRateMin(Double.parseDouble(range[0].replaceAll("[^\\d.]", "")));
+                if (range.length > 1) {
+                    job.setHourlyRateMax(Double.parseDouble(range[1].replaceAll("[^\\d.]", "")));
+                }
             }
         }
         return job;
