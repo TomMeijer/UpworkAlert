@@ -43,7 +43,7 @@ class ApifyJobServiceTest {
         job.setId("123");
         List<Job> expectedJobs = List.of(job);
 
-        when(apifyInputBuilder.build(null)).thenReturn(input);
+        when(apifyInputBuilder.build(Map.of("value", 1, "unit", "hours"))).thenReturn(input);
         when(apifyJobClient.runSyncGetDatasetItems(input)).thenReturn(apifyJobs);
         when(apifyJobParser.parseJobs(apifyJobs)).thenReturn(expectedJobs);
 
@@ -52,7 +52,7 @@ class ApifyJobServiceTest {
 
         // Then
         assertEquals(expectedJobs, result);
-        verify(apifyInputBuilder).build(null);
+        verify(apifyInputBuilder).build(Map.of("value", 1, "unit", "hours"));
         verify(apifyJobClient).runSyncGetDatasetItems(input);
         verify(apifyJobParser).parseJobs(apifyJobs);
     }
@@ -63,15 +63,15 @@ class ApifyJobServiceTest {
         ApifyInput input1 = ApifyInput.builder().build();
         ApifyInput input2 = ApifyInput.builder().build();
 
-        when(apifyInputBuilder.build(null)).thenReturn(input1);
-        when(apifyInputBuilder.build(any())).thenReturn(input2);
+        when(apifyInputBuilder.build(Map.of("value", 1, "unit", "hours"))).thenReturn(input1);
+        when(apifyInputBuilder.build(argThat(map -> map != null && "minutes".equals(map.get("unit"))))).thenReturn(input2);
 
         // When
         apifyJobService.fetchNewJobs(); // First call, lastRetrievalTime is set
         apifyJobService.fetchNewJobs(); // Second call, should have maxJobAge
 
         // Then
-        verify(apifyInputBuilder).build(null);
+        verify(apifyInputBuilder).build(Map.of("value", 1, "unit", "hours"));
         verify(apifyInputBuilder).build(argThat(map -> map != null && "minutes".equals(map.get("unit"))));
     }
 }

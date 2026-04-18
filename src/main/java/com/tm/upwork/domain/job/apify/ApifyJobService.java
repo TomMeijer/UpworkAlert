@@ -23,11 +23,13 @@ public class ApifyJobService implements JobService {
 
     @Override
     public List<Job> fetchNewJobs() {
-        Map<String, Object> maxJobAge = null;
         Instant now = Instant.now();
+        Map<String, Object> maxJobAge;
         if (lastRetrievalTime != null) {
             long minutes = Duration.between(lastRetrievalTime, now).toMinutes();
             maxJobAge = Map.of("value", minutes + 1, "unit", "minutes");
+        } else {
+            maxJobAge = Map.of("value", 1, "unit", "hours");
         }
         lastRetrievalTime = now;
         ApifyInput input = apifyInputBuilder.build(maxJobAge);
