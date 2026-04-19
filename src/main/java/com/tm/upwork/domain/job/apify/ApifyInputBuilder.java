@@ -9,6 +9,7 @@ import java.util.Map;
 
 @Component
 public class ApifyInputBuilder {
+    private static final int PAGE_SIZE = 10;
 
     @Value("${search.criteria.min-hourly-rate}")
     private String minHourlyRate;
@@ -49,8 +50,8 @@ public class ApifyInputBuilder {
         String rawUrl = builder
                 .queryParam("sort", "recency")
                 .queryParam("t", "0,1")
-                .queryParam("page", "1")
-                .queryParam("per_page", "10")
+                .queryParam("page", 1)
+                .queryParam("per_page", PAGE_SIZE)
                 .build()
                 .encode()
                 .toUriString();

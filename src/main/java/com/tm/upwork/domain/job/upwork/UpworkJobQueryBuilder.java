@@ -7,6 +7,7 @@ import java.util.List;
 
 @Component
 public class UpworkJobQueryBuilder {
+    private static final int PAGE_SIZE = 10;
 
     @Value("${search.criteria.min-hourly-rate}")
     private String minHourlyRate;
@@ -40,7 +41,7 @@ public class UpworkJobQueryBuilder {
         if (minHourlyRate != null && !minHourlyRate.isEmpty()) {
             filterBuilder.append(String.format("hourlyRate_eq: { rangeStart: %s } ", minHourlyRate));
         }
-        filterBuilder.append(String.format("pagination_eq: { after: \"0\", first: %d } ", 50));
+        filterBuilder.append(String.format("pagination_eq: { after: \"0\", first: %d } ", PAGE_SIZE));
 
         return "query {" +
                 "  marketplaceJobPostingsSearch(" +

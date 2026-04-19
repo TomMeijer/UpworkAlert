@@ -33,7 +33,7 @@ class UpworkJobQueryBuilderTest {
         assertTrue(query.contains("locations_any: [US,UK]"));
         assertTrue(query.contains("budgetRange_eq: { rangeStart: 500 }"));
         assertTrue(query.contains("hourlyRate_eq: { rangeStart: 20 }"));
-        assertTrue(query.contains("pagination_eq: { after: \"0\", first: 50 }"));
+        assertTrue(query.contains("pagination_eq: { after: \"0\", first: 10 }"));
     }
 
     @Test
