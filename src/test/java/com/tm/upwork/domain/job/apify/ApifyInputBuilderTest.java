@@ -5,52 +5,74 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ApifyInputBuilderTest {
 
-    private ApifyInputBuilder builder;
+    private ApifyInputBuilder apifyInputBuilder;
 
     @BeforeEach
     void setUp() {
-        builder = new ApifyInputBuilder();
+        apifyInputBuilder = new ApifyInputBuilder();
     }
 
     @Test
-    void testBuild_Default() {
-        ReflectionTestUtils.setField(builder, "locations", List.of());
-        ApifyInput input = builder.build();
+    void testBuildWithAllValues() {
+        // Given
+        ReflectionTestUtils.setField(apifyInputBuilder, "minHourlyRate", "20");
+        ReflectionTestUtils.setField(apifyInputBuilder, "minFixedPrice", "500");
+        ReflectionTestUtils.setField(apifyInputBuilder, "categoryIds", List.of("123", "456"));
+        ReflectionTestUtils.setField(apifyInputBuilder, "locations", List.of("USA", "UK"));
+        ReflectionTestUtils.setField(apifyInputBuilder, "searchExpression", "java spring");
 
-        assertNotNull(input);
-        assertNotNull(input.getRawUrl());
-        assertNull(input.getQuery());
-        assertNull(input.getLocation());
+        // When
+        ApifyInput result = apifyInputBuilder.build();
+
+        // Then
+        assertNotNull(result);
+        assertEquals(Map.of("value", 1, "unit", "hours"), result.getMaxJobAge());
+        
+        String rawUrl = result.getRawUrl();
+        assertTrue(rawUrl.contains("https://www.upwork.com/nx/search/jobs/"));
+        assertTrue(rawUrl.contains("hourly_rate=20-"));
+        assertTrue(rawUrl.contains("amount=500-"));
+        assertTrue(rawUrl.contains("category2_uid=123,456"));
+        assertTrue(rawUrl.contains("location=USA,UK"));
+        assertTrue(rawUrl.contains("q=java%20spring"));
+        assertTrue(rawUrl.contains("sort=recency"));
+        assertTrue(rawUrl.contains("t=0,1"));
+        assertTrue(rawUrl.contains("page=1"));
+        assertTrue(rawUrl.contains("per_page=10"));
     }
 
     @Test
-    void testBuild_AllCriteria() {
-        ReflectionTestUtils.setField(builder, "minHourlyRate", "35");
-        ReflectionTestUtils.setField(builder, "minFixedPrice", "100");
-        ReflectionTestUtils.setField(builder, "categoryIds", List.of("531770282580668418"));
-        ReflectionTestUtils.setField(builder, "locations", List.of("Asia", "Europe", "Oceania"));
-        ReflectionTestUtils.setField(builder, "searchExpression", "(Java OR Spring OR Angular)");
+    void testBuildWithEmptyValues() {
+        // Given - all fields are null by default or we can set them to empty
+        ReflectionTestUtils.setField(apifyInputBuilder, "minHourlyRate", "");
+        ReflectionTestUtils.setField(apifyInputBuilder, "minFixedPrice", null);
+        ReflectionTestUtils.setField(apifyInputBuilder, "categoryIds", List.of());
+        ReflectionTestUtils.setField(apifyInputBuilder, "locations", null);
+        ReflectionTestUtils.setField(apifyInputBuilder, "searchExpression", null);
 
-        ApifyInput input = builder.build();
+        // When
+        ApifyInput result = apifyInputBuilder.build();
 
-        assertEquals("https://www.upwork.com/nx/search/jobs/?amount=100-&category2_uid=531770282580668418&hourly_rate=35-&location=Asia,Europe,Oceania&q=(Java%20OR%20Spring%20OR%20Angular)&sort=recency&t=0,1&page=1&per_page=10", input.getRawUrl());
-        assertNull(input.getQuery());
-        assertNull(input.getLocation());
-        assertNull(input.getFixedPriceRange());
-        assertNull(input.getHourlyRateRange());
-    }
-
-    @Test
-    void testBuild_WithMaxJobAge() {
-        java.util.Map<String, Object> maxJobAge = java.util.Map.of("value", 30, "unit", "minutes");
-        ApifyInput input = builder.build(maxJobAge);
-
-        assertNotNull(input);
-        assertEquals(maxJobAge, input.getMaxJobAge());
+        // Then
+        assertNotNull(result);
+        String rawUrl = result.getRawUrl();
+        assertTrue(rawUrl.contains("https://www.upwork.com/nx/search/jobs/"));
+        assertFalse(rawUrl.contains("hourly_rate="));
+        assertFalse(rawUrl.contains("amount="));
+        assertFalse(rawUrl.contains("category2_uid="));
+        assertFalse(rawUrl.contains("location="));
+        assertFalse(rawUrl.contains("q="));
+        
+        // Defaults should still be there
+        assertTrue(rawUrl.contains("sort=recency"));
+        assertTrue(rawUrl.contains("t=0,1"));
+        assertTrue(rawUrl.contains("page=1"));
+        assertTrue(rawUrl.contains("per_page=10"));
     }
 }

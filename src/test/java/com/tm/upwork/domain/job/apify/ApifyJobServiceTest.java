@@ -9,10 +9,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import java.util.Map;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.argThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,45 +29,25 @@ class ApifyJobServiceTest {
     private ApifyJobService apifyJobService;
 
     @Test
-    void fetchNewJobs_ShouldReturnParsedJobs() {
+    void testFetchNewJobs() {
         // Given
-        ApifyInput input = ApifyInput.builder().query("Java").build();
-        ApifyJob apifyJob = new ApifyJob();
-        apifyJob.setId("123");
-        List<ApifyJob> apifyJobs = List.of(apifyJob);
-        Job job = new Job();
-        job.setId("123");
-        List<Job> expectedJobs = List.of(job);
+        ApifyInput mockInput = ApifyInput.builder().build();
+        List<ApifyJob> mockApifyJobs = List.of(new ApifyJob());
+        List<Job> expectedJobs = List.of(new Job());
 
-        when(apifyInputBuilder.build(Map.of("value", 1, "unit", "hours"))).thenReturn(input);
-        when(apifyJobClient.runSyncGetDatasetItems(input)).thenReturn(apifyJobs);
-        when(apifyJobParser.parseJobs(apifyJobs)).thenReturn(expectedJobs);
+        when(apifyInputBuilder.build()).thenReturn(mockInput);
+        when(apifyJobClient.runSyncGetDatasetItems(mockInput)).thenReturn(mockApifyJobs);
+        when(apifyJobParser.parseJobs(mockApifyJobs)).thenReturn(expectedJobs);
 
         // When
-        List<Job> result = apifyJobService.fetchNewJobs();
+        List<Job> actualJobs = apifyJobService.fetchNewJobs();
 
         // Then
-        assertEquals(expectedJobs, result);
-        verify(apifyInputBuilder).build(Map.of("value", 1, "unit", "hours"));
-        verify(apifyJobClient).runSyncGetDatasetItems(input);
-        verify(apifyJobParser).parseJobs(apifyJobs);
-    }
+        assertNotNull(actualJobs);
+        assertEquals(expectedJobs, actualJobs);
 
-    @Test
-    void fetchNewJobs_ShouldIncludeMaxJobAgeInSecondCall() {
-        // Given
-        ApifyInput input1 = ApifyInput.builder().build();
-        ApifyInput input2 = ApifyInput.builder().build();
-
-        when(apifyInputBuilder.build(Map.of("value", 1, "unit", "hours"))).thenReturn(input1);
-        when(apifyInputBuilder.build(argThat(map -> map != null && "minutes".equals(map.get("unit"))))).thenReturn(input2);
-
-        // When
-        apifyJobService.fetchNewJobs(); // First call, lastRetrievalTime is set
-        apifyJobService.fetchNewJobs(); // Second call, should have maxJobAge
-
-        // Then
-        verify(apifyInputBuilder).build(Map.of("value", 1, "unit", "hours"));
-        verify(apifyInputBuilder).build(argThat(map -> map != null && "minutes".equals(map.get("unit"))));
+        verify(apifyInputBuilder).build();
+        verify(apifyJobClient).runSyncGetDatasetItems(mockInput);
+        verify(apifyJobParser).parseJobs(mockApifyJobs);
     }
 }

@@ -9,6 +9,7 @@ import java.util.Map;
 
 @Component
 public class ApifyInputBuilder {
+    private static final Map<String, Object> MAX_JOB_AGE = Map.of("value", 1, "unit", "hours");
     private static final int PAGE_SIZE = 10;
 
     @Value("${search.criteria.min-hourly-rate}")
@@ -27,10 +28,6 @@ public class ApifyInputBuilder {
     private String searchExpression;
 
     public ApifyInput build() {
-        return build(null);
-    }
-
-    public ApifyInput build(Map<String, Object> maxJobAge) {
         var builder = UriComponentsBuilder.fromHttpUrl("https://www.upwork.com/nx/search/jobs/");
         if (minFixedPrice != null && !minFixedPrice.isEmpty()) {
             builder.queryParam("amount", minFixedPrice + "-");
@@ -58,7 +55,7 @@ public class ApifyInputBuilder {
 
         return ApifyInput.builder()
                 .rawUrl(rawUrl)
-                .maxJobAge(maxJobAge)
+                .maxJobAge(MAX_JOB_AGE)
                 .build();
     }
 }
