@@ -15,6 +15,9 @@ import java.util.Map;
 @Primary
 @RequiredArgsConstructor
 public class ApifyJobService implements JobService {
+    private static final int JOB_AGE_MARGIN_MINUTES = 2;
+    private static final int DEFAULT_JOB_AGE_HOURS = 1;
+
     private final ApifyJobClient apifyJobClient;
     private final ApifyJobParser apifyJobParser;
     private final ApifyInputBuilder apifyInputBuilder;
@@ -26,14 +29,15 @@ public class ApifyJobService implements JobService {
         Instant now = Instant.now();
         Map<String, Object> maxJobAge;
         if (lastRetrievalTime != null) {
-            long minutes = Duration.between(lastRetrievalTime, now).toMinutes();
-            maxJobAge = Map.of("value", minutes + 1, "unit", "minutes");
+            long minutes = Duration.between(lastRetrievalTime, now).toMinutes() + 1;
+            maxJobAge = Map.of("value", minutes + JOB_AGE_MARGIN_MINUTES, "unit", "minutes");
         } else {
-            maxJobAge = Map.of("value", 1, "unit", "hours");
+            maxJobAge = Map.of("value", DEFAULT_JOB_AGE_HOURS, "unit", "hours");
         }
-        lastRetrievalTime = now;
         ApifyInput input = apifyInputBuilder.build(maxJobAge);
         List<ApifyJob> apifyJobs = apifyJobClient.runSyncGetDatasetItems(input);
-        return apifyJobParser.parseJobs(apifyJobs);
+        List<Job> jobs = apifyJobParser.parseJobs(apifyJobs);
+        lastRetrievalTime = now;
+        return jobs;
     }
 }

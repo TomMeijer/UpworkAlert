@@ -31,13 +31,21 @@ public class JobAlertTask {
             for (Job job : jobs) {
                 if (!processedJobIds.contains(job.getId())) {
                     log.info("Sending email notification for job: {}", job.getTitle());
-                    emailService.sendJobNotification(job);
-                    processedJobIds.add(job.getId());
+                    sendNotification(job);
                 }
             }
         } catch (Exception e) {
             log.error("Error during job check.", e);
         }
         log.info("Job check finished.");
+    }
+
+    private void sendNotification(Job job) {
+        try {
+            emailService.sendJobNotification(job);
+            processedJobIds.add(job.getId());
+        } catch (Exception e) {
+            log.error("Failed to send email.", e);
+        }
     }
 }
