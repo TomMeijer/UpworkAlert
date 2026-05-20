@@ -1,6 +1,6 @@
-package com.tm.upwork.domain.job.apify;
+package com.tm.upwork.domain.job.client.apify;
 
-import com.tm.upwork.domain.job.Job;
+import com.tm.upwork.domain.job.JobDto;
 import com.tm.upwork.domain.job.JobType;
 import org.springframework.stereotype.Component;
 
@@ -9,14 +9,14 @@ import java.util.List;
 @Component
 public class ApifyJobParser {
 
-    public List<Job> parseJobs(List<ApifyJob> apifyJobs) {
+    public List<JobDto> parseJobs(List<ApifyJob> apifyJobs) {
         return apifyJobs.stream()
                 .map(this::mapToJob)
                 .toList();
     }
 
-    public Job mapToJob(ApifyJob apifyJob) {
-        Job job = new Job();
+    public JobDto mapToJob(ApifyJob apifyJob) {
+        JobDto job = new JobDto();
         job.setId(apifyJob.getId());
         job.setTitle(apifyJob.getTitle());
         job.setDescription(apifyJob.getDescription());

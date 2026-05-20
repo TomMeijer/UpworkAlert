@@ -1,6 +1,6 @@
-package com.tm.upwork.domain.job.upwork;
+package com.tm.upwork.domain.job.client.upwork;
 
-import com.tm.upwork.domain.job.Job;
+import com.tm.upwork.domain.job.JobDto;
 import com.tm.upwork.domain.job.JobType;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
@@ -15,8 +15,8 @@ import java.util.List;
 @Service
 public class UpworkJobParser {
 
-    public List<Job> parseJobs(JSONObject response) throws JSONException {
-        List<Job> jobs = new ArrayList<>();
+    public List<JobDto> parseJobs(JSONObject response) throws JSONException {
+        List<JobDto> jobs = new ArrayList<>();
         if (response == null || !response.has("data")) {
             return jobs;
         }
@@ -31,7 +31,7 @@ public class UpworkJobParser {
         for (int i = 0; i < edges.length(); i++) {
             JSONObject edge = edges.getJSONObject(i);
             JSONObject node = edge.getJSONObject("node");
-            Job job = new Job();
+            JobDto job = new JobDto();
             job.setId(node.optString("id"));
             job.setTitle(node.optString("title"));
             job.setDescription(node.optString("description"));

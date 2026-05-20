@@ -1,4 +1,4 @@
-package com.tm.upwork.domain.job.apify;
+package com.tm.upwork.domain.job.client.apify;
 
 import lombok.Data;
 import java.util.List;

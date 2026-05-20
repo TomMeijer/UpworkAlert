@@ -1,4 +1,4 @@
-package com.tm.upwork.domain.job.apify;
+package com.tm.upwork.domain.job.client.apify;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class ApifyJobClientTest {
+class ApifyJobDownloaderTest {
 
     @Mock
     private WebClient webClient;
@@ -37,14 +37,14 @@ class ApifyJobClientTest {
     @Mock
     private WebClient.ResponseSpec responseSpec;
 
-    private ApifyJobClient apifyJobClient;
+    private ApifyJobDownloader apifyJobDownloader;
     private static final String TEST_TOKEN = "test-token";
 
     @BeforeEach
     void setUp() {
         when(webClientBuilder.baseUrl(anyString())).thenReturn(webClientBuilder);
         when(webClientBuilder.build()).thenReturn(webClient);
-        apifyJobClient = new ApifyJobClient(webClientBuilder, TEST_TOKEN);
+        apifyJobDownloader = new ApifyJobDownloader(webClientBuilder, TEST_TOKEN);
     }
 
     @Test
@@ -52,11 +52,11 @@ class ApifyJobClientTest {
         // Prepare mock data
         ApifyJob job1 = new ApifyJob();
         job1.setId("1");
-        job1.setTitle("Job 1");
+        job1.setTitle("JobDto 1");
 
         ApifyJob job2 = new ApifyJob();
         job2.setId("2");
-        job2.setTitle("Job 2");
+        job2.setTitle("JobDto 2");
 
         ApifyInput input = ApifyInput.builder()
                 .query("Java")
@@ -71,15 +71,15 @@ class ApifyJobClientTest {
         when(responseSpec.bodyToFlux(ApifyJob.class)).thenReturn(Flux.just(job1, job2));
 
         // Call the client
-        List<ApifyJob> result = apifyJobClient.runSyncGetDatasetItems(input);
+        List<ApifyJob> result = apifyJobDownloader.runSyncGetDatasetItems(input);
 
         // Verify result
         assertNotNull(result);
         assertEquals(2, result.size());
         assertEquals("1", result.get(0).getId());
-        assertEquals("Job 1", result.get(0).getTitle());
+        assertEquals("JobDto 1", result.get(0).getTitle());
         assertEquals("2", result.get(1).getId());
-        assertEquals("Job 2", result.get(1).getTitle());
+        assertEquals("JobDto 2", result.get(1).getTitle());
 
         // Verify client interaction
         verify(webClient).post();
@@ -97,7 +97,7 @@ class ApifyJobClientTest {
         when(responseSpec.bodyToFlux(ApifyJob.class)).thenReturn(Flux.empty());
 
         // Call the client
-        List<ApifyJob> result = apifyJobClient.runSyncGetDatasetItems(input);
+        List<ApifyJob> result = apifyJobDownloader.runSyncGetDatasetItems(input);
 
         // Verify result
         assertNotNull(result);

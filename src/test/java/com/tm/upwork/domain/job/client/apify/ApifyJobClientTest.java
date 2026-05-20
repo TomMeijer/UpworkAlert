@@ -1,6 +1,6 @@
-package com.tm.upwork.domain.job.apify;
+package com.tm.upwork.domain.job.client.apify;
 
-import com.tm.upwork.domain.job.Job;
+import com.tm.upwork.domain.job.JobDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,10 +14,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class ApifyJobServiceTest {
+class ApifyJobClientTest {
 
     @Mock
-    private ApifyJobClient apifyJobClient;
+    private ApifyJobDownloader apifyJobDownloader;
 
     @Mock
     private ApifyJobParser apifyJobParser;
@@ -26,28 +26,28 @@ class ApifyJobServiceTest {
     private ApifyInputBuilder apifyInputBuilder;
 
     @InjectMocks
-    private ApifyJobService apifyJobService;
+    private ApifyJobClient apifyJobService;
 
     @Test
     void testFetchNewJobs() {
         // Given
         ApifyInput mockInput = ApifyInput.builder().build();
         List<ApifyJob> mockApifyJobs = List.of(new ApifyJob());
-        List<Job> expectedJobs = List.of(new Job());
+        List<JobDto> expectedJobs = List.of(new JobDto());
 
         when(apifyInputBuilder.build()).thenReturn(mockInput);
-        when(apifyJobClient.runSyncGetDatasetItems(mockInput)).thenReturn(mockApifyJobs);
+        when(apifyJobDownloader.runSyncGetDatasetItems(mockInput)).thenReturn(mockApifyJobs);
         when(apifyJobParser.parseJobs(mockApifyJobs)).thenReturn(expectedJobs);
 
         // When
-        List<Job> actualJobs = apifyJobService.fetchNewJobs();
+        List<JobDto> actualJobs = apifyJobService.fetchNewJobs();
 
         // Then
         assertNotNull(actualJobs);
         assertEquals(expectedJobs, actualJobs);
 
         verify(apifyInputBuilder).build();
-        verify(apifyJobClient).runSyncGetDatasetItems(mockInput);
+        verify(apifyJobDownloader).runSyncGetDatasetItems(mockInput);
         verify(apifyJobParser).parseJobs(mockApifyJobs);
     }
 }

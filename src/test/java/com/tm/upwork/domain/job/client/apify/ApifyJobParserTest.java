@@ -1,6 +1,6 @@
-package com.tm.upwork.domain.job.apify;
+package com.tm.upwork.domain.job.client.apify;
 
-import com.tm.upwork.domain.job.Job;
+import com.tm.upwork.domain.job.JobDto;
 import com.tm.upwork.domain.job.JobType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ class ApifyJobParserTest {
     void testMapToJob_FixedPrice() {
         ApifyJob apifyJob = new ApifyJob();
         apifyJob.setId("123");
-        apifyJob.setTitle("Fixed Job");
+        apifyJob.setTitle("Fixed JobDto");
         apifyJob.setDescription("Description");
         apifyJob.setUrl("http://example.com");
         apifyJob.setAbsoluteDate("2023-10-27T10:00:00Z");
@@ -35,10 +35,10 @@ class ApifyJobParserTest {
         apifyJob.setClientRating(4.5);
         apifyJob.setClientTotalSpent(1000.0);
 
-        Job job = parser.mapToJob(apifyJob);
+        JobDto job = parser.mapToJob(apifyJob);
 
         assertEquals("123", job.getId());
-        assertEquals("Fixed Job", job.getTitle());
+        assertEquals("Fixed JobDto", job.getTitle());
         assertEquals("Description", job.getDescription());
         assertEquals("http://example.com", job.getUrl());
         assertEquals("2023-10-27T10:00:00Z", job.getPublishedOn());
@@ -58,7 +58,7 @@ class ApifyJobParserTest {
         ApifyJob apifyJob = new ApifyJob();
         apifyJob.setPaymentVerified("VERIFIED");
 
-        Job job = parser.mapToJob(apifyJob);
+        JobDto job = parser.mapToJob(apifyJob);
 
         assertTrue(job.isPaymentVerified());
 
@@ -74,7 +74,7 @@ class ApifyJobParserTest {
         apifyJob.setJobType("Hourly");
         apifyJob.setBudget("$25 - $50");
 
-        Job job = parser.mapToJob(apifyJob);
+        JobDto job = parser.mapToJob(apifyJob);
 
         assertEquals("456", job.getId());
         assertEquals(JobType.HOURLY, job.getType());
@@ -89,7 +89,7 @@ class ApifyJobParserTest {
         apifyJob.setJobType("Hourly");
         apifyJob.setBudget("$30");
 
-        Job job = parser.mapToJob(apifyJob);
+        JobDto job = parser.mapToJob(apifyJob);
 
         assertEquals(JobType.HOURLY, job.getType());
         assertEquals(30.0, job.getHourlyRateMin());
@@ -103,7 +103,7 @@ class ApifyJobParserTest {
         ApifyJob job2 = new ApifyJob();
         job2.setId("2");
 
-        List<Job> jobs = parser.parseJobs(List.of(job1, job2));
+        List<JobDto> jobs = parser.parseJobs(List.of(job1, job2));
 
         assertEquals(2, jobs.size());
         assertEquals("1", jobs.get(0).getId());

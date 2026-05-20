@@ -1,8 +1,8 @@
-package com.tm.upwork.domain.job.upwork;
+package com.tm.upwork.domain.job.client.upwork;
 
 import com.Upwork.api.OAuthClient;
 import com.Upwork.api.Routers.Graphql;
-import com.tm.upwork.domain.job.Job;
+import com.tm.upwork.domain.job.JobDto;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class UpworkJobServiceTest {
+class UpworkJobClientTest {
 
     @Mock
     private OAuthClient oauthClient;
@@ -33,7 +33,7 @@ class UpworkJobServiceTest {
     private UpworkJobQueryBuilder queryBuilder;
 
     @InjectMocks
-    private UpworkJobService upworkJobService;
+    private UpworkJobClient upworkJobService;
 
     @Test
     void testFetchNewJobsSuccess() throws JSONException {
@@ -42,7 +42,7 @@ class UpworkJobServiceTest {
         when(queryBuilder.buildQuery()).thenReturn(query);
 
         JSONObject mockResponse = new JSONObject();
-        List<Job> expectedJobs = Collections.singletonList(new Job());
+        List<JobDto> expectedJobs = Collections.singletonList(new JobDto());
         when(jobParser.parseJobs(any(JSONObject.class))).thenReturn(expectedJobs);
 
         try (MockedConstruction<Graphql> mocked = mockConstruction(Graphql.class,
@@ -51,7 +51,7 @@ class UpworkJobServiceTest {
                 })) {
 
             // When
-            List<Job> actualJobs = upworkJobService.fetchNewJobs();
+            List<JobDto> actualJobs = upworkJobService.fetchNewJobs();
 
             // Then
             assertNotNull(actualJobs);

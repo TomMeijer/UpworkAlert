@@ -1,12 +1,11 @@
 package com.tm.upwork.email;
 
-import com.tm.upwork.domain.job.Job;
+import com.tm.upwork.domain.job.JobDto;
 import com.tm.upwork.domain.job.JobType;
 import jakarta.mail.internet.MimeMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -48,7 +47,7 @@ class EmailServiceTest {
     @Test
     void shouldSendJobNotification() {
         // Given
-        Job job = new Job();
+        JobDto job = new JobDto();
         job.setTitle("Java Developer");
         job.setType(JobType.FIXED);
         job.setFixedPrice(500.0);

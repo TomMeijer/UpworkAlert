@@ -1,9 +1,9 @@
-package com.tm.upwork.domain.job.upwork;
+package com.tm.upwork.domain.job.client.upwork;
 
 import com.Upwork.api.OAuthClient;
 import com.Upwork.api.Routers.Graphql;
-import com.tm.upwork.domain.job.Job;
-import com.tm.upwork.domain.job.JobService;
+import com.tm.upwork.domain.job.JobDto;
+import com.tm.upwork.domain.job.client.JobClient;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,13 +14,13 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class UpworkJobService implements JobService {
+public class UpworkJobClient implements JobClient {
 
     private final OAuthClient oauthClient;
     private final UpworkJobParser jobParser;
     private final UpworkJobQueryBuilder queryBuilder;
 
-    public List<Job> fetchNewJobs() {
+    public List<JobDto> fetchNewJobs() {
         try {
             String query = queryBuilder.buildQuery();
             var params = new HashMap<String, String>();

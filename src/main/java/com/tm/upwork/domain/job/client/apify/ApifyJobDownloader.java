@@ -1,4 +1,4 @@
-package com.tm.upwork.domain.job.apify;
+package com.tm.upwork.domain.job.client.apify;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -7,13 +7,13 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.List;
 
 @Component
-public class ApifyJobClient {
+public class ApifyJobDownloader {
 
     private final WebClient webClient;
     private final String apifyToken;
 
-    public ApifyJobClient(WebClient.Builder webClientBuilder,
-                          @Value("${apify.token}") String apifyToken) {
+    public ApifyJobDownloader(WebClient.Builder webClientBuilder,
+                              @Value("${apify.token}") String apifyToken) {
         this.webClient = webClientBuilder.baseUrl("https://api.apify.com/v2").build();
         this.apifyToken = apifyToken;
     }

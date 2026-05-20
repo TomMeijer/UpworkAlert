@@ -1,6 +1,6 @@
-package com.tm.upwork.domain.job.upwork;
+package com.tm.upwork.domain.job.client.upwork;
 
-import com.tm.upwork.domain.job.Job;
+import com.tm.upwork.domain.job.JobDto;
 import com.tm.upwork.domain.job.JobType;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,7 +23,7 @@ class UpworkJobParserTest {
 
     @Test
     void testParseJobs_NullResponse() throws JSONException {
-        List<Job> jobs = parser.parseJobs(null);
+        List<JobDto> jobs = parser.parseJobs(null);
         assertNotNull(jobs);
         assertTrue(jobs.isEmpty());
     }
@@ -31,7 +31,7 @@ class UpworkJobParserTest {
     @Test
     void testParseJobs_EmptyData() throws JSONException {
         JSONObject response = new JSONObject();
-        List<Job> jobs = parser.parseJobs(response);
+        List<JobDto> jobs = parser.parseJobs(response);
         assertNotNull(jobs);
         assertTrue(jobs.isEmpty());
     }
@@ -40,7 +40,7 @@ class UpworkJobParserTest {
     void testParseJobs_NoMarketplaceJobPostingsSearch() throws JSONException {
         JSONObject response = new JSONObject();
         response.put("data", new JSONObject());
-        List<Job> jobs = parser.parseJobs(response);
+        List<JobDto> jobs = parser.parseJobs(response);
         assertNotNull(jobs);
         assertTrue(jobs.isEmpty());
     }
@@ -54,7 +54,7 @@ class UpworkJobParserTest {
 
         JSONObject node = new JSONObject();
         node.put("id", "123");
-        node.put("title", "Test Job");
+        node.put("title", "Test JobDto");
         node.put("description", "Test Description");
         node.put("ciphertext", "~0123456789abcdef");
         node.put("publishedDateTime", "2023-10-27T10:00:00Z");
@@ -89,12 +89,12 @@ class UpworkJobParserTest {
         data.put("marketplaceJobPostingsSearch", search);
         response.put("data", data);
 
-        List<Job> jobs = parser.parseJobs(response);
+        List<JobDto> jobs = parser.parseJobs(response);
 
         assertEquals(1, jobs.size());
-        Job job = jobs.get(0);
+        JobDto job = jobs.get(0);
         assertEquals("123", job.getId());
-        assertEquals("Test Job", job.getTitle());
+        assertEquals("Test JobDto", job.getTitle());
         assertEquals("Test Description", job.getDescription());
         assertEquals("https://www.upwork.com/jobs/~0123456789abcdef", job.getUrl());
         assertEquals("2023-10-27T10:00:00Z", job.getPublishedOn());
@@ -135,10 +135,10 @@ class UpworkJobParserTest {
         data.put("marketplaceJobPostingsSearch", search);
         response.put("data", data);
 
-        List<Job> jobs = parser.parseJobs(response);
+        List<JobDto> jobs = parser.parseJobs(response);
 
         assertEquals(1, jobs.size());
-        Job job = jobs.get(0);
+        JobDto job = jobs.get(0);
 
         assertEquals(JobType.HOURLY, job.getType());
         assertEquals(25.0, job.getHourlyRateMin());
@@ -165,10 +165,10 @@ class UpworkJobParserTest {
         data.put("marketplaceJobPostingsSearch", search);
         response.put("data", data);
 
-        List<Job> jobs = parser.parseJobs(response);
+        List<JobDto> jobs = parser.parseJobs(response);
 
         assertEquals(1, jobs.size());
-        Job job = jobs.get(0);
+        JobDto job = jobs.get(0);
         assertEquals("789", job.getId());
         assertEquals("", job.getTitle()); // optString returns "" by default
         assertNull(job.getUrl());

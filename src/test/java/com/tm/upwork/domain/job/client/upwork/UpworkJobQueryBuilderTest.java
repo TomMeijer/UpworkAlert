@@ -1,4 +1,4 @@
-package com.tm.upwork.domain.job.upwork;
+package com.tm.upwork.domain.job.client.upwork;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

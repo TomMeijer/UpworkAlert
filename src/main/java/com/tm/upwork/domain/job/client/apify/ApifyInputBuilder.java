@@ -1,4 +1,4 @@
-package com.tm.upwork.domain.job.apify;
+package com.tm.upwork.domain.job.client.apify;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -28,7 +28,7 @@ public class ApifyInputBuilder {
     private String searchExpression;
 
     public ApifyInput build() {
-        var builder = UriComponentsBuilder.fromHttpUrl("https://www.upwork.com/nx/search/jobs/");
+        var builder = UriComponentsBuilder.fromUriString("https://www.upwork.com/nx/search/jobs/");
         if (minFixedPrice != null && !minFixedPrice.isEmpty()) {
             builder.queryParam("amount", minFixedPrice + "-");
         }

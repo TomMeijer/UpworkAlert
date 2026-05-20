@@ -1,8 +1,19 @@
 package com.tm.upwork.domain.job;
 
-import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-public interface JobService {
+@Service
+@RequiredArgsConstructor
+public class JobService {
+    
+    private final JobRepository jobRepository;
+    private final JobMapper jobMapper;
 
-    List<Job> fetchNewJobs();
+    @Transactional
+    public void saveJob(JobDto jobDto) {
+        Job job = jobMapper.mapToEntity(jobDto);
+        jobRepository.save(job);
+    }
 }

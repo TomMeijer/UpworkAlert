@@ -1,4 +1,4 @@
-package com.tm.upwork.domain.job.upwork;
+package com.tm.upwork.domain.job.client.upwork;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
