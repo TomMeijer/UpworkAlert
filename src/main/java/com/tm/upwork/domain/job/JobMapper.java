@@ -24,4 +24,24 @@ public class JobMapper {
         job.setClientTotalSpent(dto.getClientTotalSpent());
         return job;
     }
+
+    public JobDto mapToDto(Job job) {
+        JobDto dto = new JobDto();
+        dto.setId(job.getUpworkId());
+        dto.setTitle(job.getTitle());
+        dto.setDescription(job.getDescription());
+        dto.setType(job.getType());
+        dto.setHourlyRateMin(job.getHourlyRateMin());
+        dto.setHourlyRateMax(job.getHourlyRateMax());
+        dto.setFixedPrice(job.getFixedPrice());
+        dto.setClientCountry(job.getClientCountry());
+        dto.setRequiredSkills(job.getRequiredSkills());
+        dto.setUrl(job.getUrl());
+        dto.setPublishedOn(job.getPublishedOn());
+        dto.setExperienceLevel(job.getExperienceLevel());
+        dto.setPaymentVerified(job.isPaymentVerified());
+        dto.setClientRating(job.getClientRating());
+        dto.setClientTotalSpent(job.getClientTotalSpent());
+        return dto;
+    }
 }

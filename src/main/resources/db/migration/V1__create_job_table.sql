@@ -10,7 +10,7 @@ CREATE TABLE job (
     client_country VARCHAR(255),
     required_skills TEXT,
     url VARCHAR(255),
-    published_on VARCHAR(255),
+    published_on DATETIME,
     experience_level VARCHAR(255),
     payment_verified BOOLEAN,
     client_rating DOUBLE,

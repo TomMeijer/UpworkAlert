@@ -197,7 +197,7 @@ td {
                                                                     <tbody>
                                                                     <tr>
                                                                         <td style="padding-top: 20px; text-align: left; vertical-align: top;font-size: 16px; line-height: 24px; font-family:Helvetica,Arial,Sans Serif;">
-                                                                            <span th:text="'Posted on ' + ${job.publishedOn}" style="color: #65735B; font-size: 14px; ">Posted on</span>
+                                                                        <span th:text="'Posted on ' + ${#temporals.format(job.publishedOn, 'yyyy-MM-dd HH:mm')}" style="color: #65735B; font-size: 14px; ">Posted on</span>
                                                                         </td>
                                                                     </tr>
                                                                     </tbody>

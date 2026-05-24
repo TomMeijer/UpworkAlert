@@ -1,6 +1,7 @@
 package com.tm.upwork.domain.job;
 
 import lombok.Data;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -15,7 +16,7 @@ public class JobDto {
     private String clientCountry;
     private List<String> requiredSkills;
     private String url;
-    private String publishedOn;
+    private LocalDateTime publishedOn;
     private String experienceLevel;
     private boolean paymentVerified;
     private Double clientRating;

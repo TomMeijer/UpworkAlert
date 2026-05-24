@@ -8,6 +8,8 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -97,7 +99,7 @@ class UpworkJobParserTest {
         assertEquals("Test JobDto", job.getTitle());
         assertEquals("Test Description", job.getDescription());
         assertEquals("https://www.upwork.com/jobs/~0123456789abcdef", job.getUrl());
-        assertEquals("2023-10-27T10:00:00Z", job.getPublishedOn());
+        assertEquals(LocalDateTime.parse("2023-10-27T10:00:00Z", DateTimeFormatter.ISO_DATE_TIME), job.getPublishedOn());
         assertEquals("EXPERT", job.getExperienceLevel());
         assertEquals(JobType.FIXED, job.getType());
         assertEquals(500.0, job.getFixedPrice());

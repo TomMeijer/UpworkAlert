@@ -8,6 +8,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +41,10 @@ public class UpworkJobParser {
             if (ciphertext != null && !ciphertext.isEmpty()) {
                 job.setUrl("https://www.upwork.com/jobs/" + ciphertext);
             }
-            job.setPublishedOn(node.optString("publishedDateTime"));
+            String publishedDateTime = node.optString("publishedDateTime");
+            if (publishedDateTime != null && !publishedDateTime.isEmpty()) {
+                job.setPublishedOn(LocalDateTime.parse(publishedDateTime, DateTimeFormatter.ISO_DATE_TIME));
+            }
             job.setExperienceLevel(node.optString("experienceLevel"));
 
             // Price handling

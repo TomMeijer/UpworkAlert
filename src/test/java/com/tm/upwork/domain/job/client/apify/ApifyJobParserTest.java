@@ -5,6 +5,8 @@ import com.tm.upwork.domain.job.JobType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,7 +43,7 @@ class ApifyJobParserTest {
         assertEquals("Fixed JobDto", job.getTitle());
         assertEquals("Description", job.getDescription());
         assertEquals("http://example.com", job.getUrl());
-        assertEquals("2023-10-27T10:00:00Z", job.getPublishedOn());
+        assertEquals(LocalDateTime.parse("2023-10-27T10:00:00Z", DateTimeFormatter.ISO_DATE_TIME), job.getPublishedOn());
         assertEquals("United States", job.getClientCountry());
         assertEquals(List.of("Java", "Spring"), job.getRequiredSkills());
         assertEquals(JobType.FIXED, job.getType());
