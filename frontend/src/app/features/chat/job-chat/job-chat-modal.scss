@@ -1,0 +1,108 @@
+.chat-container {
+  height: 500px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+
+  &.empty {
+    justify-content: center;
+  }
+
+  .messages-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+.welcome-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+  padding: 20px;
+  gap: 20px;
+
+  .welcome-text {
+    font-size: 1.4rem;
+    max-width: 80%;
+  }
+
+  .quick-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+.chat-message {
+  max-width: 80%;
+  padding: 8px 12px;
+  border-radius: 15px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+
+  &.user-message {
+    align-self: flex-end;
+    background-color: #007bff;
+    color: white;
+    border-bottom-right-radius: 2px;
+  }
+
+  &.bot-message {
+    align-self: flex-start;
+    background-color: #f1f0f0;
+    color: #333;
+    border-bottom-left-radius: 2px;
+  }
+
+  .message-content {
+    white-space: pre-wrap;
+    position: relative;
+    padding-right: 13px;
+
+    .copy-btn {
+      position: absolute;
+      top: -5px;
+      right: -10px;
+      padding: 0 5px;
+      color: #6c757d;
+      opacity: 0;
+      transition: opacity 0.2s;
+      font-size: 0.8rem;
+
+      &:hover {
+        color: #007bff;
+      }
+    }
+
+    &:hover .copy-btn {
+      opacity: 1;
+    }
+  }
+
+  .message-time {
+    font-size: 0.7rem;
+    opacity: 0.7;
+    margin-top: 4px;
+    text-align: right;
+  }
+}
+
+.typing-dots {
+  display: inline-block;
+  span {
+    animation: blink 1.4s infinite both;
+    &:nth-child(2) { animation-delay: 0.2s; }
+    &:nth-child(3) { animation-delay: 0.4s; }
+  }
+}
+
+@keyframes blink {
+  0% { opacity: 0.2; }
+  20% { opacity: 1; }
+  100% { opacity: 0.2; }
+}

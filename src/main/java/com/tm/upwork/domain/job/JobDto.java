@@ -1,26 +1,33 @@
 package com.tm.upwork.domain.job;
 
-import lombok.Data;
+import com.tm.upwork.domain.job.entity.JobType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
+@AllArgsConstructor
+@Getter
+@Builder
 public class JobDto {
-    private String id;
-    private String title;
-    private String description;
-    private JobType type;
-    private Double hourlyRateMin;
-    private Double hourlyRateMax;
-    private Double fixedPrice;
-    private String clientCountry;
-    private List<String> requiredSkills;
-    private String url;
-    private LocalDateTime publishedOn;
-    private String experienceLevel;
-    private boolean paymentVerified;
-    private Double clientRating;
-    private Double clientTotalSpent;
+    private final Integer id;
+    private final String upworkId;
+    private final String title;
+    private final String description;
+    private final JobType type;
+    private final Double hourlyRateMin;
+    private final Double hourlyRateMax;
+    private final Double fixedPrice;
+    private final String clientCountry;
+    private final List<String> requiredSkills;
+    private final String url;
+    private final LocalDateTime publishedOn;
+    private final String experienceLevel;
+    private final boolean paymentVerified;
+    private final Double clientRating;
+    private final Double clientTotalSpent;
 
     public String getPriceString() {
         if (type == JobType.FIXED) {

@@ -1,97 +1,69 @@
-# Upwork Alert
+# UpworkAlert
 
-Upwork Alert is a Spring Boot application that periodically monitors Upwork for new job postings based on custom search criteria and sends email notifications when matching jobs are found.
+UpworkAlert is a job monitoring and analysis tool designed to help freelancers track and evaluate jobs on Upwork. It periodically fetches jobs based on custom criteria, provides email notifications, and allows for AI-assisted analysis of job descriptions.
 
 ## Features
 
-- **Automated Job Search**: Periodically fetches job postings from Upwork using either the official GraphQL API or the Apify Upwork Scraper.
-- **Customizable Criteria**: Filter jobs by hourly rate, fixed price, categories, locations, and keywords.
-- **Email Notifications**: Sends detailed emails for new jobs, including title, description, and link.
-- **Deduplication**: Ensures that the same job is not notified multiple times (using a local in-memory cache).
-- **Multiple Data Sources**: Support for both official Upwork API and Apify scraper.
+- **Automated Job Fetching**: Regularly polls Upwork (via Apify or directly) for new jobs matching your specific criteria.
+- **Criteria-based Filtering**: Filter jobs by hourly rate, fixed price, category, location, and keywords.
+- **Email Notifications**: Get notified instantly when a relevant job is found (optional).
+- **AI Chat Integration**: Interact with an AI (OpenAI) to analyze job details, ask questions about requirements, or draft proposals.
+- **Modern Web Dashboard**: A responsive Angular-based frontend to view and manage job listings.
 
-## Prerequisites
+## Tech Stack
 
-- **Java 21** or higher.
-- **Maven 3.6+**.
-- **Data Source (at least one)**:
-    - **Upwork API Credentials**: `client_id` and `client_secret` from the Upwork Developer Portal.
-    - **Apify Token**: An API token from [Apify](https://apify.com/) to use the [neatrat/upwork-job-scraper](https://apify.com/neatrat/upwork-job-scraper).
-- **SMTP Server**: An email account to send notifications (e.g., Gmail, SendGrid).
+### Backend
+- **Java 25**
+- **Spring Boot 4**
+- **MySQL**
+- **Flyway**
 
-## Configuration
-
-Configure the application by editing `src/main/resources/application.properties`.
-
-### Upwork API Settings (Optional)
-
-To use the official Upwork API, configure these properties:
-
-```properties
-upwork.api.client-id=YOUR_CLIENT_ID
-upwork.api.client-secret=YOUR_CLIENT_SECRET
-```
-
-### Apify Settings (Default)
-
-The application currently uses Apify by default. Provide your Apify API token:
-
-```properties
-apify.token=YOUR_APIFY_TOKEN
-```
-
-### Search Criteria
-
-Adjust these values to match your job preferences:
-
-```properties
-search.criteria.min-hourly-rate=35
-search.criteria.min-fixed-price=100
-search.criteria.category-ids=531770282580668418
-search.criteria.locations=Europe,Asia,Oceania
-search.criteria.searchExpression=(Java OR Spring OR Angular)
-```
-
-### Email Settings
-
-Configure your SMTP server for sending alerts:
-
-```properties
-spring.mail.host=smtp.example.com
-spring.mail.port=587
-spring.mail.username=your-email@example.com
-spring.mail.password=YOUR_PASSWORD
-spring.mail.from=your-email@example.com
-spring.mail.to=notification-recipient@example.com
-```
+### Frontend
+- **Angular 21**
+- **Bootstrap 5**
 
 ## Getting Started
 
-1. **Clone the repository**:
-   ```bash
-   git clone <repository-url>
-   cd UpworkAlert
-   ```
+### Prerequisites
+- Java 25 JDK
+- Node.js & npm (for frontend)
+- MySQL Database
+- External API keys:
+  - **Apify Token**: Required for job scraping.
+  - **OpenAI API Key**: Required for the AI chat feature.
+  - **Upwork API Credentials** (optional, depending on client configuration).
 
-2. **Configure the application**: Update `src/main/resources/application.properties` with your credentials and criteria.
+### Configuration
 
-3. **Build the project**:
-   ```bash
-   mvn clean install
-   ```
+1. Create a MySQL database named `upwork_alert`.
+2. Configure your environment in `src/main/resources/application.yml`:
+   - Update `spring.datasource` credentials.
+   - Set `apify.token`.
+   - Set `openai.api-key` and `openai.vector-store-id`.
+   - (Optional) Configure `spring.mail` if email notifications are enabled.
+   - Adjust `search.criteria` to match your target jobs.
 
-4. **Run the application**:
-   ```bash
-   mvn spring-boot:run
-   ```
+### Running the Application
 
-The application will start and check for new jobs every 15 minutes by default.
+#### Backend
+```bash
+./mvnw spring-boot:run
+```
+
+#### Frontend
+```bash
+cd frontend
+npm install
+npm start
+```
+The dashboard will be available at `http://localhost:4200`.
 
 ## Project Structure
 
-- `src/main/java/com/tm/upwork/domain/alert`: Contains the scheduled task logic.
-- `src/main/java/com/tm/upwork/domain/job`: Handles job fetching, parsing, and query building.
-    - `apify`: Apify scraper integration.
-    - `upwork`: Official Upwork API integration.
-- `src/main/java/com/tm/upwork/email`: Service for sending email notifications.
-- `src/main/java/com/tm/upwork/config`: Configuration beans for Upwork API.
+- `src/main/java/com/tm/upwork`: Backend source code.
+  - `domain/alert`: Scheduled tasks for job monitoring.
+  - `domain/chat`: AI chat integration logic.
+  - `domain/job`: Job management and API clients (Apify/Upwork).
+- `src/main/resources`: Application configuration and database migrations.
+- `frontend`: Angular application.
+  - `src/app/features`: Feature-based frontend modules (job list, chat).

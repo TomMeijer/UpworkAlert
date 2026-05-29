@@ -1,0 +1,82 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">AI Chat - {{ job()?.title }}</h4>
+  <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true" class="visually-hidden">&times;</span>
+  </button>
+</div>
+<div class="modal-body chat-container" #scrollContainer [class.empty]="isLoading() || messages().length === 0">
+  @if (!isLoading()) {
+    <div class="messages-list">
+      @if (messages().length === 0) {
+        <div class="welcome-container">
+          <div class="welcome-text text-muted">
+            Hello! I can help you apply for this job posting. What would you like to do?
+          </div>
+          <div class="quick-actions">
+            <button class="btn btn-outline-primary" (click)="sendAction('Write a cover letter.')">
+              Write cover letter
+            </button>
+            <button class="btn btn-outline-primary" (click)="sendAction('Summarize this job posting.')">
+              Summarize posting
+            </button>
+          </div>
+        </div>
+      }
+
+      @for (msg of messages(); track $index) {
+        <div class="chat-message" [ngClass]="{'user-message': msg.role === 'USER', 'bot-message': msg.role === 'ASSISTANT'}">
+          <div class="message-content">
+            {{ msg.content }}
+            @if (msg.role === 'ASSISTANT') {
+              <button class="btn btn-sm btn-link copy-btn" (click)="copyToClipboard(msg.content)" title="Copy to clipboard">
+                <i class="bi bi-copy"></i>
+              </button>
+            }
+          </div>
+          <div class="message-time">
+            {{ msg.time | date:'shortTime' }}
+          </div>
+        </div>
+      }
+
+      @if (isTyping()) {
+        <div class="chat-message bot-message">
+          <div class="message-content">
+          <span class="typing-dots">
+            <span>.</span><span>.</span><span>.</span>
+          </span>
+          </div>
+        </div>
+      }
+
+      @if (error()) {
+        <div class="alert alert-danger mt-2">
+          {{ error() }}
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="text-center">
+      <div class="spinner-border text-success"></div>
+    </div>
+  }
+</div>
+<div class="modal-footer">
+  <div class="input-group">
+    <input type="text"
+           class="form-control"
+           placeholder="Type a message..."
+           [ngModel]="newMessage()"
+           (ngModelChange)="newMessage.set($event)"
+           (keyup.enter)="sendMessage()"
+           [disabled]="isLoading() || isTyping()"
+    >
+    <button class="btn btn-primary"
+            type="button"
+            (click)="sendMessage()"
+            [disabled]="isLoading() || isTyping() || !newMessage().trim()"
+    >
+      Send
+    </button>
+  </div>
+</div>

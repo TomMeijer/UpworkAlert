@@ -1,12 +1,13 @@
 package com.tm.upwork.domain.job.client.apify;
 
 import com.tm.upwork.domain.job.JobDto;
-import com.tm.upwork.domain.job.JobType;
+import com.tm.upwork.domain.job.entity.JobType;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,49 +20,61 @@ public class ApifyJobParser {
                 .toList();
     }
 
-    public JobDto mapToJob(ApifyJob apifyJob) {
-        JobDto job = new JobDto();
-        job.setId(apifyJob.getId());
-        job.setTitle(apifyJob.getTitle());
-        job.setDescription(apifyJob.getDescription());
-        job.setUrl(apifyJob.getUrl());
-        if (apifyJob.getAbsoluteDate() != null && !apifyJob.getAbsoluteDate().isEmpty()) {
-            job.setPublishedOn(LocalDateTime.parse(apifyJob.getAbsoluteDate(), DateTimeFormatter.ISO_DATE_TIME));
-        }
-        job.setClientCountry(apifyJob.getClientLocation());
-        job.setRequiredSkills(apifyJob.getTags());
-        job.setExperienceLevel(apifyJob.getExperienceLevel());
-        job.setClientRating(apifyJob.getClientRating());
-        job.setClientTotalSpent(apifyJob.getClientTotalSpent());
+    private JobDto mapToJob(ApifyJob apifyJob) {
+        var builder = JobDto.builder()
+                .upworkId(Objects.requireNonNull(apifyJob.getId(), "upworkId must not be null."))
+                .title(Objects.requireNonNull(apifyJob.getTitle(), "title must not be null."))
+                .description(apifyJob.getDescription())
+                .url(getUrl(apifyJob))
+                .publishedOn(LocalDateTime.parse(
+                        Objects.requireNonNull(apifyJob.getAbsoluteDate(), "publishedOn must not be null."),
+                        DateTimeFormatter.ISO_DATE_TIME))
+                .clientCountry(apifyJob.getClientLocation())
+                .requiredSkills(apifyJob.getTags())
+                .experienceLevel(apifyJob.getExperienceLevel())
+                .clientRating(apifyJob.getClientRating())
+                .clientTotalSpent(apifyJob.getClientTotalSpent());
 
         if (apifyJob.getPaymentVerified() instanceof Boolean paymentVerifiedBool) {
-            job.setPaymentVerified(paymentVerifiedBool);
+            builder.paymentVerified(paymentVerifiedBool);
         } else if (apifyJob.getPaymentVerified() instanceof String paymentVerifiedString) {
-            job.setPaymentVerified("VERIFIED".equalsIgnoreCase(paymentVerifiedString));
+            builder.paymentVerified("VERIFIED".equalsIgnoreCase(paymentVerifiedString));
         }
 
-        if ("Fixed".equals(apifyJob.getJobType())) {
-            job.setType(JobType.FIXED);
-            job.setFixedPrice(parseAmount(apifyJob.getBudget()));
-        } else if ("Hourly".equals(apifyJob.getJobType())) {
-            job.setType(JobType.HOURLY);
+        if ("FIXED".equalsIgnoreCase(apifyJob.getJobType())) {
+            builder.type(JobType.FIXED)
+                    .fixedPrice(parseAmount(apifyJob.getBudget()));
+        } else if ("HOURLY".equalsIgnoreCase(apifyJob.getJobType())) {
+            builder.type(JobType.HOURLY);
             if (apifyJob.getBudget() != null && !apifyJob.getBudget().isBlank()) {
                 String[] range = apifyJob.getBudget().split("-");
-                job.setHourlyRateMin(parseAmount(range[0]));
+                builder.hourlyRateMin(parseAmount(range[0]));
                 if (range.length > 1) {
-                    job.setHourlyRateMax(parseAmount(range[1]));
+                    builder.hourlyRateMax(parseAmount(range[1]));
                 }
             }
         }
-        return job;
+
+        return builder.build();
+    }
+
+    private String getUrl(ApifyJob apifyJob) {
+        String url = Objects.requireNonNull(apifyJob.getUrl(), "url must not be null.");
+        Pattern pattern = Pattern.compile("~\\d+");
+        Matcher matcher = pattern.matcher(url);
+        if (matcher.find()) {
+            return "https://www.upwork.com/jobs/" + matcher.group();
+        }
+        return url;
     }
 
     private Double parseAmount(String input) {
         if (input == null || input.isBlank()) {
             return null;
         }
+        String sanitized = input.replace(",", "");
         Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
-        Matcher matcher = pattern.matcher(input);
+        Matcher matcher = pattern.matcher(sanitized);
         if (matcher.find()) {
             return Double.parseDouble(matcher.group());
         }

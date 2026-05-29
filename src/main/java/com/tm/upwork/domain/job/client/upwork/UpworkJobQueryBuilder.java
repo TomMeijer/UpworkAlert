@@ -7,6 +7,7 @@ import java.util.List;
 
 @Component
 public class UpworkJobQueryBuilder {
+
     private static final int PAGE_SIZE = 10;
 
     @Value("${search.criteria.min-hourly-rate}")

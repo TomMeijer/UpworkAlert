@@ -1,5 +1,6 @@
 package com.tm.upwork.domain.job;
 
+import com.tm.upwork.domain.job.entity.Job;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +20,6 @@ public class JobService {
         jobRepository.save(job);
     }
 
-    @Transactional(readOnly = true)
     public Page<JobDto> getJobs(Pageable pageable) {
         return jobRepository.findAll(pageable)
                 .map(jobMapper::mapToDto);

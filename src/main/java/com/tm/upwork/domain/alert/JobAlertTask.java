@@ -5,7 +5,6 @@ import com.tm.upwork.domain.job.JobDto;
 import com.tm.upwork.domain.job.JobService;
 import com.tm.upwork.domain.job.client.JobClient;
 import com.tm.upwork.email.EmailService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,12 +44,12 @@ public class JobAlertTask {
             List<JobDto> jobs = jobClient.fetchNewJobs();
             log.info("{} jobs fetched.", jobs.size());
             for (JobDto job : jobs) {
-                if (!processedJobIds.contains(job.getId())) {
+                if (!processedJobIds.contains(job.getUpworkId())) {
                     saveJob(job);
                     if (emailEnabled) {
                         sendNotification(job);
                     }
-                    processedJobIds.add(job.getId());
+                    processedJobIds.add(job.getUpworkId());
                 }
             }
         } catch (Exception e) {

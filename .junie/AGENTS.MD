@@ -6,9 +6,10 @@
 
 ## Backend (Spring Boot)
 - Never directly return JPA entities from controllers, instead use mapper classes to map them to DTO's.
-- Use Lombok for boilerplate code like getters, setters and constructors.
+- Use Lombok for boilerplate code like getters, setters and constructors. Don't use @Value and @Data.
 
 ## Frontend (Angular)
 - Prefer SCSS to regular CSS.
 - Separate HTML, TypeScript and CSS.
 - Don't use deprecated NgIf and NgFor, instead use @if and @for blocks.
+- Don't rely on ZoneJS for change detection, instead use Angular signals.

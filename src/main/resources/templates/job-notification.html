@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://fonts.googleapis.com/css?family=Helvetica:400,700" rel="stylesheet">
 <title></title>
-<style type="text/css">
+<style>
 body {
     margin: 0;
     padding: 0;
@@ -28,12 +28,6 @@ table {
 }
 td {
     mso-line-height-rule: exactly;
-}
-.ExternalClass {
-    width: 100%;
-}
-.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {
-    line-height: 100%;
 }
 @media only screen and (max-width: 480px) {
     .mobile-display {
@@ -58,6 +52,193 @@ td {
         margin-bottom: 30px;
     }
 }
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    font-size: 16px;
+    line-height: 24px;
+}
+.header-bg {
+    background-color: #14A800;
+}
+.header-img-desktop {
+    width: 600px;
+    height: auto;
+    display: block;
+}
+.header-img-mobile-container {
+    font-size: 0;
+    max-height: 0;
+    overflow: hidden;
+    display: none;
+    visibility: collapse;
+    line-height: 0px;
+    mso-hide: all;
+}
+.header-img-mobile {
+    width: 100%;
+    height: auto;
+}
+.text-cell {
+    padding-top: 30px;
+    text-align: left;
+    vertical-align: top;
+    font-size: 16px;
+    line-height: 24px;
+    font-family: Helvetica, Arial, Sans Serif;
+}
+.text-cell-compact {
+    padding-top: 10px;
+    text-align: left;
+    vertical-align: top;
+    font-size: 16px;
+    line-height: 24px;
+    font-family: Helvetica, Arial, Sans Serif;
+}
+.text-cell-bottom {
+    padding-top: 20px;
+    text-align: left;
+    vertical-align: top;
+    font-size: 16px;
+    line-height: 24px;
+    font-family: Helvetica, Arial, Sans Serif;
+}
+.card-row-content {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    word-break: break-word;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 20px;
+}
+.title-h2 {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-family: Helvetica, sans-serif;
+    font-weight: normal;
+    font-size: 24px;
+    line-height: 30px;
+    color: #001E00;
+}
+.title-h3 {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-family: Helvetica, sans-serif;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 26px;
+    color: #001E00;
+}
+.job-link {
+    color: #001E00;
+    text-decoration: none;
+}
+.job-description {
+    font-family: Helvetica, Arial, sans-serif;
+    word-break: normal;
+}
+.divider-line {
+    font-size: 0;
+    line-height: 0;
+    border-top: 1px solid #D5E0D5;
+}
+.meta-container {
+    font-family: Helvetica, Arial, sans-serif;
+    color: #676767;
+    font-size: 14px;
+    word-break: normal;
+}
+.meta-inner {
+    font-family: Helvetica, Arial, sans-serif;
+    vertical-align: super;
+    display: inline;
+    word-break: normal;
+}
+.meta-item {
+    margin-left: 10px;
+    display: inline-block;
+    word-break: break-all;
+}
+.meta-img-verified {
+    font-family: Helvetica, Arial, sans-serif;
+    padding-left: 3px;
+    display: inline;
+    word-break: normal;
+}
+.meta-img-rating {
+    font-family: Helvetica, Arial, sans-serif;
+    padding-left: 3px;
+    display: inline;
+    word-break: normal;
+}
+.img-middle {
+    vertical-align: middle;
+}
+.img-stars {
+    vertical-align: middle;
+    margin-top: -2px;
+}
+.skill-container {
+    display: inline-block;
+}
+.skill-badge {
+    word-break: break-word;
+    background-color: #E4EBE4;
+    border-radius: 20px;
+    color: #65735B;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 13px;
+    margin-bottom: 3px;
+    margin-right: 2px;
+    margin-top: 3px;
+    padding-bottom: 6px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 6px;
+    text-decoration: none;
+}
+.posted-on {
+    color: #65735B;
+    font-size: 14px;
+}
+.button-table {
+    border-radius: 100px;
+    width: 200px;
+}
+.button-td {
+    -moz-border-radius: 100px;
+    -webkit-border-radius: 2px;
+    border-radius: 100px;
+    font-family: Helvetica, sans-serif;
+    mso-padding-alt: 11px 30px;
+    white-space: nowrap;
+}
+.button-link {
+    padding: 11px 30px;
+    display: block;
+    text-decoration: none;
+    border: 0;
+    text-align: center;
+    font-family: Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    color: #FFFFFF;
+    background: #14A800;
+    -moz-border-radius: 100px;
+    -webkit-border-radius: 2px;
+    border-radius: 100px;
+    mso-line-height-rule: exactly;
+    line-height: 14px;
+    white-space: nowrap;
+}
+.card-white-bg {
+    background-color: white;
+    padding-top: 0px;
+    padding-bottom: 30px;
+}
 </style>
 </head>
 <body>
@@ -65,7 +246,7 @@ td {
     <tbody>
     <tr>
         <td>
-            <div style="max-width: 600px; margin: 0 auto; font-size: 16px; line-height: 24px;">
+            <div class="container">
                 <table border="0" cellpadding="0" cellspacing="0" width="100%">
                     <tbody>
                     <tr>
@@ -77,33 +258,33 @@ td {
                                         <table border="0" cellpadding="0" cellspacing="0" class="card-box" width="100%">
                                             <tbody>
                                             <tr>
-                                                <td style="background-color:white; padding-top: 0px; padding-bottom: 30px;" class="card">
+                                                <td class="card card-white-bg">
                                                     <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                                         <tbody>
                                                         <tr>
-                                                            <td align="center" style="background-color: #14A800;">
+                                                            <td align="center" class="header-bg">
                                                                 <a href="https://www.upwork.com">
-                                                                    <img src="https://assets.static-upwork.com/gw-packages/assets/talent/Upwork_logo_banner_Green.png" style="width:600px; height:auto; display:block;" width="600" border="0" class="dn" alt="Upwork">
-                                                                    <div class="mobile-display" style="font-size: 0; max-height: 0; overflow: hidden; display: none; visibility: collapse; line-height:0px; mso-hide:all;">
-                                                                        <img src="https://assets.static-upwork.com/gw-packages/assets/talent/Upwork_logo_banner_Green_Mobile.png" style="width:100%; height:auto;" border="0" alt="Upwork">
+                                                                    <img src="https://assets.static-upwork.com/gw-packages/assets/talent/Upwork_logo_banner_Green.png" width="600" border="0" class="dn header-img-desktop" alt="Upwork">
+                                                                    <div class="mobile-display header-img-mobile-container">
+                                                                        <img src="https://assets.static-upwork.com/gw-packages/assets/talent/Upwork_logo_banner_Green_Mobile.png" border="0" class="header-img-mobile" alt="Upwork">
                                                                     </div>
                                                                 </a>
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="card-row" style="font-family: Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; word-break: break-word; padding-left: 20px; padding-right: 20px; padding-top: 20px;">
+                                                            <td class="card-row card-row-content">
                                                                 <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                                                     <tbody>
                                                                     <tr>
-                                                                        <td style="padding-top: 30px; text-align: left; vertical-align: top;font-size: 16px; line-height: 24px; font-family:Helvetica,Arial,Sans Serif;"></td>
+                                                                        <td class="text-cell"></td>
                                                                     </tr>
                                                                     </tbody>
                                                                 </table>
-                                                                <h2 style="margin-top: 0; margin-bottom: 0; font-family: Helvetica, sans-serif; font-weight: normal; font-size: 24px; line-height: 30px; color: #001E00;">New job alert</h2>
+                                                                <h2 class="title-h2">New job alert</h2>
                                                                 <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                                                     <tbody>
                                                                     <tr>
-                                                                        <td style="padding-top: 10px; text-align: left; vertical-align: top;font-size: 16px; line-height: 24px; font-family:Helvetica,Arial,Sans Serif;">
+                                                                        <td class="text-cell-compact">
                                                                             Hi, this job looks like a match for you. Check it out, and be one of the first to submit a proposal!
                                                                         </td>
                                                                     </tr>
@@ -112,12 +293,12 @@ td {
                                                                 <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                                                     <tbody>
                                                                     <tr>
-                                                                        <td style="padding-top: 30px; text-align: left; vertical-align: top;font-size: 16px; line-height: 24px; font-family:Helvetica,Arial,Sans Serif;">
+                                                                        <td class="text-cell">
                                                                             <div class="full-width-divider">
                                                                                 <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                                                                     <tbody>
                                                                                     <tr>
-                                                                                        <td style="font-size: 0; line-height: 0; border-top: 1px solid #D5E0D5;">&nbsp;</td>
+                                                                                        <td class="divider-line">&nbsp;</td>
                                                                                     </tr>
                                                                                     </tbody>
                                                                                 </table>
@@ -129,15 +310,15 @@ td {
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="card-row" style="font-family: Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; word-break: break-word; padding-left: 20px; padding-right: 20px; padding-top: 20px;">
-                                                                <h3 style="margin-top: 0; margin-bottom: 0; font-family: Helvetica, sans-serif; font-weight: normal; font-size: 20px; line-height: 26px; color: #001E00;">
-                                                                    <a th:href="${job.url}" th:text="${job.title}" style="color: #001E00; text-decoration: none;">Job Title</a>
+                                                            <td class="card-row card-row-content">
+                                                                <h3 class="title-h3">
+                                                                    <a th:href="${job.url}" th:text="${job.title}" class="job-link">Job Title</a>
                                                                 </h3>
                                                                 <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                                                     <tbody>
                                                                     <tr>
-                                                                        <td style="padding-top: 10px; text-align: left; vertical-align: top;font-size: 16px; line-height: 24px; font-family:Helvetica,Arial,Sans Serif;">
-                                                                            <div th:text="${job.description}" style="font-family: Helvetica, Arial, sans-serif; word-break: normal;">Job Description</div>
+                                                                        <td class="text-cell-compact">
+                                                                            <div th:text="${job.description}" class="job-description">Job Description</div>
                                                                         </td>
                                                                     </tr>
                                                                     </tbody>
@@ -145,59 +326,59 @@ td {
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="card-row" style="font-family: Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; word-break: break-word; padding-left: 20px; padding-right: 20px; padding-top: 20px;">
-                                                                <div style="font-family: Helvetica, Arial, sans-serif; color: #676767; font-size: 14px; word-break: normal; ">
+                                                            <td class="card-row card-row-content">
+                                                                <div class="meta-container">
                                                                     <span>
                                                                         <img src="https://www.upwork.com/s/emails/icon-briefcase.png" alt="Client" height="24">
                                                                     </span>
-                                                                    <div style="font-family: Helvetica, Arial, sans-serif; vertical-align: super; display: inline; word-break: normal; ">
-                                                                        <span th:text="${job.priceString}" style="margin-left: 10px; display : inline-block; word-break : break-all;">Price</span>
-                                                                        <span th:if="${job.experienceLevel != null}" style="margin-left: 10px; display : inline-block; word-break : break-all;">•</span>
-                                                                        <span th:if="${job.experienceLevel != null}" th:text="${job.experienceLevel}" style="margin-left: 10px; display : inline-block; word-break : break-all;">Level</span>
+                                                                    <div class="meta-inner">
+                                                                        <span th:text="${job.priceString}" class="meta-item">Price</span>
+                                                                        <span th:if="${job.experienceLevel != null}" class="meta-item">•</span>
+                                                                        <span th:if="${job.experienceLevel != null}" th:text="${job.experienceLevel}" class="meta-item">Level</span>
                                                                     </div>
                                                                 </div>
                                                                 <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                                                     <tbody>
                                                                     <tr>
-                                                                        <td style="padding-top: 10px; text-align: left; vertical-align: top;font-size: 16px; line-height: 24px; font-family:Helvetica,Arial,Sans Serif;"></td>
+                                                                        <td class="text-cell-compact"></td>
                                                                     </tr>
                                                                     </tbody>
                                                                 </table>
-                                                                <div style="font-family: Helvetica, Arial, sans-serif; color: #676767; font-size: 14px; word-break: normal; ">
+                                                                <div class="meta-container">
                                                                     <span>
                                                                         <img src="https://www.upwork.com/s/emails/icon-avatar.png" alt="Client" height="24">
                                                                     </span>
-                                                                    <div style="font-family: Helvetica, Arial, sans-serif; vertical-align: super; display: inline; word-break: normal; ">
-                                                                        <span th:if="${job.paymentVerified}" style="margin-left: 10px; display: inline-block; word-break: break-all;">Payment verified</span>
-                                                                        <div th:if="${job.paymentVerified}" style="font-family: Helvetica, Arial, sans-serif; padding-left: 3px; display: inline; word-break: normal; ">
-                                                                            <img src="https://www.upwork.com/s/emails/growth/badge/payment-verified-badge.png" alt="verified" height="14" style=" vertical-align: middle; ">
+                                                                    <div class="meta-inner">
+                                                                        <span th:if="${job.paymentVerified}" class="meta-item">Payment verified</span>
+                                                                        <div th:if="${job.paymentVerified}" class="meta-img-verified">
+                                                                            <img src="https://www.upwork.com/s/emails/growth/badge/payment-verified-badge.png" alt="verified" height="14" class="img-middle">
                                                                         </div>
-                                                                        <span th:if="${job.clientRating != null}" style="margin-left: 10px; display : inline-block; word-break: break-all;">•</span>
-                                                                        <span th:if="${job.clientRating != null}" th:text="${job.clientRating}" style="margin-left: 10px; display : inline-block; word-break : break-all;">Rating</span>
-                                                                        <div th:if="${job.clientRating != null}" style="font-family: Helvetica, Arial, sans-serif; padding-left: 3px; display: inline; word-break: normal; ">
-                                                                            <img src="https://www.upwork.com/s/emails/star-yellow-bg.png" alt="stars" height="14" style="vertical-align: middle; margin-top: -2px; ">
+                                                                        <span th:if="${job.clientRating != null}" class="meta-item">•</span>
+                                                                        <span th:if="${job.clientRating != null}" th:text="${job.clientRating}" class="meta-item">Rating</span>
+                                                                        <div th:if="${job.clientRating != null}" class="meta-img-rating">
+                                                                            <img src="https://www.upwork.com/s/emails/star-yellow-bg.png" alt="stars" height="14" class="img-stars">
                                                                         </div>
-                                                                        <span th:if="${job.clientTotalSpent != null}" style="margin-left: 10px; display : inline-block; word-break : break-all;">•</span>
-                                                                        <span th:if="${job.clientTotalSpent != null}" th:text="'$' + ${job.clientTotalSpent} + ' spent'" style="margin-left: 10px; display : inline-block; word-break : break-all;">Spent</span>
-                                                                        <span style="margin-left: 10px; display : inline-block; word-break : break-all;">•</span>
-                                                                        <span th:text="${job.clientCountry}" style="margin-left: 10px; display : inline-block; word-break : break-all;">Country</span>
+                                                                        <span th:if="${job.clientTotalSpent != null}" class="meta-item">•</span>
+                                                                        <span th:if="${job.clientTotalSpent != null}" th:text="'$' + ${job.clientTotalSpent} + ' spent'" class="meta-item">Spent</span>
+                                                                        <span th:if="${job.clientCountry != null}" class="meta-item">•</span>
+                                                                        <span th:if="${job.clientCountry != null}" th:text="${job.clientCountry}" class="meta-item">Country</span>
                                                                     </div>
                                                                 </div>
                                                                 <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                                                     <tbody>
                                                                     <tr>
-                                                                        <td style="padding-top: 10px; text-align: left; vertical-align: top;font-size: 16px; line-height: 24px; font-family:Helvetica,Arial,Sans Serif;"></td>
+                                                                        <td class="text-cell-compact"></td>
                                                                     </tr>
                                                                     </tbody>
                                                                 </table>
-                                                                <div th:each="skill : ${job.requiredSkills}" style="display:inline-block;">
-                                                                    <span th:text="${skill}" style="word-break: break-word; background-color: #E4EBE4; border-radius: 20px; color: #65735B; display: inline-block; font-size: 12px; font-weight: 400; line-height: 13px; margin-bottom: 3px; margin-right: 2px; margin-top: 3px; padding-bottom: 6px; padding-left: 10px; padding-right: 10px; padding-top: 6px; text-decoration: none;">Skill</span>
+                                                                <div th:each="skill : ${job.requiredSkills}" class="skill-container">
+                                                                    <span th:text="${skill}" class="skill-badge">Skill</span>
                                                                 </div>
                                                                 <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                                                     <tbody>
                                                                     <tr>
-                                                                        <td style="padding-top: 20px; text-align: left; vertical-align: top;font-size: 16px; line-height: 24px; font-family:Helvetica,Arial,Sans Serif;">
-                                                                        <span th:text="'Posted on ' + ${#temporals.format(job.publishedOn, 'yyyy-MM-dd HH:mm')}" style="color: #65735B; font-size: 14px; ">Posted on</span>
+                                                                        <td class="text-cell-bottom">
+                                                                        <span th:text="'Posted on ' + ${#temporals.format(job.publishedOn, 'yyyy-MM-dd HH:mm')}" class="posted-on">Posted on</span>
                                                                         </td>
                                                                     </tr>
                                                                     </tbody>
@@ -205,12 +386,12 @@ td {
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="card-row" style="font-family: Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; word-break: break-word; padding-left: 20px; padding-right: 20px; padding-top: 20px;">
-                                                                <table border="0" cellpadding="0" cellspacing="0" class="w100percent" style="border-radius: 100px; width:200px;" align="center" width="200">
+                                                            <td class="card-row card-row-content">
+                                                                <table border="0" cellpadding="0" cellspacing="0" class="w100percent button-table" align="center" width="200">
                                                                     <tbody>
                                                                     <tr>
-                                                                        <td align="center" bgcolor="#14A800" style="-moz-border-radius: 100px; -webkit-border-radius: 2px; border-radius: 100px; font-family: Helvetica, sans-serif;mso-padding-alt: 11px 30px; white-space: nowrap;" class="w100percent">
-                                                                            <a th:href="${job.url}" style="padding: 11px 30px; display: block;text-decoration: none;border:0; text-align: center; font-family: Helvetica, sans-serif;font-size:14px;font-weight:normal; color: #FFFFFF; background: #14A800; -moz-border-radius: 100px; -webkit-border-radius: 2px; border-radius: 100px; mso-line-height-rule: exactly; line-height:14px; white-space: nowrap;">View job details</a>
+                                                                        <td align="center" bgcolor="#14A800" class="w100percent button-td">
+                                                                            <a th:href="${job.url}" class="button-link">View job details</a>
                                                                         </td>
                                                                     </tr>
                                                                     </tbody>

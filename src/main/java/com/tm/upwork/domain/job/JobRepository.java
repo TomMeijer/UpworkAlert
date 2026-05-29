@@ -1,5 +1,6 @@
 package com.tm.upwork.domain.job;
 
+import com.tm.upwork.domain.job.entity.Job;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

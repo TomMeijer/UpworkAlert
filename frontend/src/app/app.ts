@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { JobListComponent } from './features/jobs/job-list/job-list';
+import { JobListComponent } from './features/job/job-list/job-list';
 
 @Component({
   selector: 'app-root',

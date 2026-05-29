@@ -9,6 +9,7 @@ import java.util.Map;
 
 @Component
 public class ApifyInputBuilder {
+
     private static final Map<String, Object> MAX_JOB_AGE = Map.of("value", 1, "unit", "hours");
     private static final int PAGE_SIZE = 10;
 

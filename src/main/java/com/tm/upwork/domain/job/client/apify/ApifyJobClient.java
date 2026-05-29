@@ -12,6 +12,7 @@ import java.util.List;
 @Primary
 @RequiredArgsConstructor
 public class ApifyJobClient implements JobClient {
+
     private final ApifyJobDownloader apifyJobDownloader;
     private final ApifyJobParser apifyJobParser;
     private final ApifyInputBuilder apifyInputBuilder;

@@ -1,7 +1,7 @@
 package com.tm.upwork.domain.job.client.upwork;
 
 import com.tm.upwork.domain.job.JobDto;
-import com.tm.upwork.domain.job.JobType;
+import com.tm.upwork.domain.job.entity.JobType;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,86 +17,65 @@ import java.util.List;
 @Service
 public class UpworkJobParser {
 
-    public List<JobDto> parseJobs(JSONObject response) throws JSONException {
-        List<JobDto> jobs = new ArrayList<>();
-        if (response == null || !response.has("data")) {
+    public List<JobDto> parseJobs(JSONObject response) {
+        try {
+            List<JobDto> jobs = new ArrayList<>();
+            JSONArray edges = response.getJSONObject("data")
+                    .getJSONObject("marketplaceJobPostingsSearch")
+                    .getJSONArray("edges");
+            for (int i = 0; i < edges.length(); i++) {
+                JSONObject node = edges.getJSONObject(i)
+                        .getJSONObject("node");
+                jobs.add(mapToJob(node));
+            }
             return jobs;
+        } catch (JSONException e) {
+            throw new IllegalStateException("Failed to parse jobs.", e);
         }
+    }
 
-        JSONObject data = response.getJSONObject("data");
-        if (data.isNull("marketplaceJobPostingsSearch")) return jobs;
-        JSONObject search = data.getJSONObject("marketplaceJobPostingsSearch");
+    private JobDto mapToJob(JSONObject node) throws JSONException {
+        var builder = JobDto.builder()
+                .upworkId(node.getString("id"))
+                .title(node.getString("title"))
+                .description(node.optString("description"))
+                .url("https://www.upwork.com/jobs/" + node.getString("ciphertext"))
+                .publishedOn(LocalDateTime.parse(node.getString("publishedDateTime"), DateTimeFormatter.ISO_DATE_TIME))
+                .experienceLevel(node.optString("experienceLevel"));
 
-        if (search.isNull("edges")) return jobs;
-        JSONArray edges = search.getJSONArray("edges");
-
-        for (int i = 0; i < edges.length(); i++) {
-            JSONObject edge = edges.getJSONObject(i);
-            JSONObject node = edge.getJSONObject("node");
-            JobDto job = new JobDto();
-            job.setId(node.optString("id"));
-            job.setTitle(node.optString("title"));
-            job.setDescription(node.optString("description"));
-            String ciphertext = node.optString("ciphertext");
-            if (ciphertext != null && !ciphertext.isEmpty()) {
-                job.setUrl("https://www.upwork.com/jobs/" + ciphertext);
-            }
-            String publishedDateTime = node.optString("publishedDateTime");
-            if (publishedDateTime != null && !publishedDateTime.isEmpty()) {
-                job.setPublishedOn(LocalDateTime.parse(publishedDateTime, DateTimeFormatter.ISO_DATE_TIME));
-            }
-            job.setExperienceLevel(node.optString("experienceLevel"));
-
-            // Price handling
-            if (!node.isNull("amount")) {
-                job.setType(JobType.FIXED);
-                JSONObject amount = node.getJSONObject("amount");
-                if (!amount.isNull("rawValue")) {
-                    job.setFixedPrice(amount.optDouble("rawValue"));
-                }
-            }
-
-            if (!node.isNull("hourlyBudgetMin")) {
-                job.setType(JobType.HOURLY);
-                JSONObject hourlyBudgetMin = node.getJSONObject("hourlyBudgetMin");
-                if (!hourlyBudgetMin.isNull("rawValue")) {
-                    job.setHourlyRateMin(hourlyBudgetMin.optDouble("rawValue"));
-                }
-            }
-
+        if (!node.isNull("amount")) {
+            builder.type(JobType.FIXED)
+                    .fixedPrice(node.getJSONObject("amount").getDouble("rawValue"));
+        } else if (!node.isNull("hourlyBudgetMin")) {
+            builder.type(JobType.HOURLY)
+                    .hourlyRateMin(node.getJSONObject("hourlyBudgetMin").getDouble("rawValue"));
             if (!node.isNull("hourlyBudgetMax")) {
-                JSONObject hourlyBudgetMax = node.getJSONObject("hourlyBudgetMax");
-                if (!hourlyBudgetMax.isNull("rawValue")) {
-                    job.setHourlyRateMax(hourlyBudgetMax.optDouble("rawValue"));
-                }
+                builder.hourlyRateMax(node.getJSONObject("hourlyBudgetMax").getDouble("rawValue"));
             }
-
-            // Client and Payment Handling
-            if (!node.isNull("client")) {
-                JSONObject client = node.getJSONObject("client");
-                if (!client.isNull("location")) {
-                    JSONObject location = client.getJSONObject("location");
-                    job.setClientCountry(location.optString("country"));
-                }
-                job.setPaymentVerified("VERIFIED".equalsIgnoreCase(client.optString("verificationStatus")));
-                job.setClientRating(client.optDouble("totalFeedback"));
-                if (!client.isNull("totalSpent")) {
-                    job.setClientTotalSpent(client.getJSONObject("totalSpent").optDouble("rawValue"));
-                }
-            }
-
-            // Skills
-            if (!node.isNull("skills")) {
-                JSONArray skillsArray = node.getJSONArray("skills");
-                List<String> skills = new ArrayList<>();
-                for (int j = 0; j < skillsArray.length(); j++) {
-                    skills.add(skillsArray.getJSONObject(j).optString("name"));
-                }
-                job.setRequiredSkills(skills);
-            }
-
-            jobs.add(job);
         }
-        return jobs;
+
+        if (!node.isNull("client")) {
+            JSONObject client = node.getJSONObject("client");
+            if (!client.isNull("location")) {
+                JSONObject location = client.getJSONObject("location");
+                builder.clientCountry(location.optString("country"));
+            }
+            builder.paymentVerified("VERIFIED".equalsIgnoreCase(client.optString("verificationStatus")))
+                    .clientRating(client.optDouble("totalFeedback"));
+            if (!client.isNull("totalSpent")) {
+                builder.clientTotalSpent(client.getJSONObject("totalSpent").getDouble("rawValue"));
+            }
+        }
+
+        if (!node.isNull("skills")) {
+            JSONArray skillsArray = node.getJSONArray("skills");
+            List<String> skills = new ArrayList<>();
+            for (int j = 0; j < skillsArray.length(); j++) {
+                skills.add(skillsArray.getJSONObject(j).getString("name"));
+            }
+            builder.requiredSkills(skills);
+        }
+
+        return builder.build();
     }
 }

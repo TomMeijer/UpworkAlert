@@ -1,5 +1,6 @@
 package com.tm.upwork.domain.job;
 
+import com.tm.upwork.domain.job.entity.Job;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -7,7 +8,7 @@ public class JobMapper {
 
     public Job mapToEntity(JobDto dto) {
         Job job = new Job();
-        job.setUpworkId(dto.getId());
+        job.setUpworkId(dto.getUpworkId());
         job.setTitle(dto.getTitle());
         job.setDescription(dto.getDescription());
         job.setType(dto.getType());
@@ -26,22 +27,23 @@ public class JobMapper {
     }
 
     public JobDto mapToDto(Job job) {
-        JobDto dto = new JobDto();
-        dto.setId(job.getUpworkId());
-        dto.setTitle(job.getTitle());
-        dto.setDescription(job.getDescription());
-        dto.setType(job.getType());
-        dto.setHourlyRateMin(job.getHourlyRateMin());
-        dto.setHourlyRateMax(job.getHourlyRateMax());
-        dto.setFixedPrice(job.getFixedPrice());
-        dto.setClientCountry(job.getClientCountry());
-        dto.setRequiredSkills(job.getRequiredSkills());
-        dto.setUrl(job.getUrl());
-        dto.setPublishedOn(job.getPublishedOn());
-        dto.setExperienceLevel(job.getExperienceLevel());
-        dto.setPaymentVerified(job.isPaymentVerified());
-        dto.setClientRating(job.getClientRating());
-        dto.setClientTotalSpent(job.getClientTotalSpent());
-        return dto;
+        var builder = JobDto.builder()
+                .id(job.getId())
+                .upworkId(job.getUpworkId())
+                .title(job.getTitle())
+                .description(job.getDescription())
+                .type(job.getType())
+                .hourlyRateMin(job.getHourlyRateMin())
+                .hourlyRateMax(job.getHourlyRateMax())
+                .fixedPrice(job.getFixedPrice())
+                .clientCountry(job.getClientCountry())
+                .requiredSkills(job.getRequiredSkills())
+                .url(job.getUrl())
+                .publishedOn(job.getPublishedOn())
+                .experienceLevel(job.getExperienceLevel())
+                .paymentVerified(job.isPaymentVerified())
+                .clientRating(job.getClientRating())
+                .clientTotalSpent(job.getClientTotalSpent());
+        return builder.build();
     }
 }

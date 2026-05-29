@@ -1,30 +1,32 @@
 package com.tm.upwork.domain.job.client.apify;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
 import java.util.List;
 import java.util.Map;
 
-@Data
+@AllArgsConstructor
+@Getter
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApifyInput {
-    private String query;
-    private String rawUrl;
-    private List<String> experienceLevel;
-    private List<String> jobType;
-    private Boolean paymentVerified;
-    private List<String> fixedPriceRange;
-    private List<String> hourlyRateRange;
-    private List<String> clientHistory;
-    private List<String> location;
-    private List<Map<String, Object>> cookies;
-    private List<Map<String, Object>> customFilters;
-    private Integer page;
-    private Integer pagesToScrape;
-    private Integer perPage;
-    private String sort;
-    private Map<String, Object> maxJobAge;
+    private final String query;
+    private final String rawUrl;
+    private final List<String> experienceLevel;
+    private final List<String> jobType;
+    private final Boolean paymentVerified;
+    private final List<String> fixedPriceRange;
+    private final List<String> hourlyRateRange;
+    private final List<String> clientHistory;
+    private final List<String> location;
+    private final List<Map<String, Object>> cookies;
+    private final List<Map<String, Object>> customFilters;
+    private final Integer page;
+    private final Integer pagesToScrape;
+    private final Integer perPage;
+    private final String sort;
+    private final Map<String, Object> maxJobAge;
 }

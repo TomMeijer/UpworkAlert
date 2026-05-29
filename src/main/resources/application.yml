@@ -1,0 +1,57 @@
+upwork:
+  api:
+    client-id:
+    client-secret:
+
+apify:
+  token:
+
+openai:
+  api-key:
+  vector-store-id:
+
+search:
+  criteria:
+    min-hourly-rate: 35
+    min-fixed-price: 100
+    category-ids: 531770282580668418
+    locations: Europe,Asia
+    searchExpression: (Java OR Spring OR Angular)
+
+notifications:
+  email:
+    enabled: false
+
+spring:
+  mail:
+    host:
+    port:
+    username:
+    password:
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    from:
+    to:
+  datasource:
+    url: jdbc:mysql://localhost:3306/upwork_alert
+    username:
+    password:
+    hikari:
+      data-source-properties:
+        useUnicode: true
+        characterEncoding: utf8
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        show_sql: false
+        connection:
+          Charset: utf8
+          characterEncoding: utf8
+          useUnicode: true
+  flyway:
+    schemas: upwork_alert

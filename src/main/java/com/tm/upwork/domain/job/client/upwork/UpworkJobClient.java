@@ -29,7 +29,7 @@ public class UpworkJobClient implements JobClient {
             JSONObject response = graphql.Execute(params);
             return jobParser.parseJobs(response);
         } catch (JSONException e) {
-            throw new IllegalStateException(e);
+            throw new IllegalStateException("Failed to fetch jobs.", e);
         }
     }
 }

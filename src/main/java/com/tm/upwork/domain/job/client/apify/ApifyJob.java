@@ -1,10 +1,15 @@
 package com.tm.upwork.domain.job.client.apify;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 import java.util.Map;
 
-@Data
+@AllArgsConstructor
+@Getter
+@Setter
 public class ApifyJob {
     private String id;
     private String subId;
