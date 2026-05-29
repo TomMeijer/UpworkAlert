@@ -1,6 +1,7 @@
 package com.tm.upwork.domain.job.client.upwork;
 
 import com.tm.upwork.domain.job.JobDto;
+import com.tm.upwork.domain.job.entity.JobStatus;
 import com.tm.upwork.domain.job.entity.JobType;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
@@ -39,6 +40,7 @@ public class UpworkJobParser {
                 .upworkId(node.getString("id"))
                 .title(node.getString("title"))
                 .description(node.optString("description"))
+                .status(JobStatus.NEW)
                 .url("https://www.upwork.com/jobs/" + node.getString("ciphertext"))
                 .publishedOn(LocalDateTime.parse(node.getString("publishedDateTime"), DateTimeFormatter.ISO_DATE_TIME))
                 .experienceLevel(node.optString("experienceLevel"));

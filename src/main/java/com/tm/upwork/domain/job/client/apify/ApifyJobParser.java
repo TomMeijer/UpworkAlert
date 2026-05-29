@@ -1,6 +1,7 @@
 package com.tm.upwork.domain.job.client.apify;
 
 import com.tm.upwork.domain.job.JobDto;
+import com.tm.upwork.domain.job.entity.JobStatus;
 import com.tm.upwork.domain.job.entity.JobType;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +26,7 @@ public class ApifyJobParser {
                 .upworkId(Objects.requireNonNull(apifyJob.getId(), "upworkId must not be null."))
                 .title(Objects.requireNonNull(apifyJob.getTitle(), "title must not be null."))
                 .description(apifyJob.getDescription())
+                .status(JobStatus.NEW)
                 .url(getUrl(apifyJob))
                 .publishedOn(LocalDateTime.parse(
                         Objects.requireNonNull(apifyJob.getAbsoluteDate(), "publishedOn must not be null."),

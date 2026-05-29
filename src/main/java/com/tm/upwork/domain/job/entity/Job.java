@@ -25,6 +25,9 @@ public class Job {
     @Enumerated(EnumType.STRING)
     private JobType type;
 
+    @Enumerated(EnumType.STRING)
+    private JobStatus status = JobStatus.NEW;
+
     private Double hourlyRateMin;
     private Double hourlyRateMax;
     private Double fixedPrice;

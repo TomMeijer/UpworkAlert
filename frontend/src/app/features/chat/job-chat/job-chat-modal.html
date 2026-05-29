@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h4 class="modal-title pull-left">AI Chat - {{ job()?.title }}</h4>
+  <h4 class="modal-title pull-left">AI Chat - <a [href]="job()?.url" target="_blank">{{ job()?.title }}</a></h4>
   <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
     <span aria-hidden="true" class="visually-hidden">&times;</span>
   </button>

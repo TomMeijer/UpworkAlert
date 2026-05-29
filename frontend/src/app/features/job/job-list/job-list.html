@@ -21,94 +21,115 @@
     </div>
   </div>
 
-  @if (jobsPage()) {
-    <div>
-      @for (job of jobsPage()!.content; track job.id) {
-        <div class="card border rounded-5 mb-3">
-          <div class="card-body">
-            <div class="small text-secondary mb-2">
-              {{ job.publishedOn | timeAgo }}
-            </div>
-            <div class="d-flex justify-content-between align-items-start mb-2">
-              <a [href]="job.url" target="_blank" class="job-title">{{ job.title }}</a>
-            </div>
+  @if (error()) {
+    <div class="alert alert-danger">
+      {{ error() }}
+    </div>
+  }
 
-            <div class="d-flex align-items-center gap-3 text-secondary mb-2 small">
-              @if (job.paymentVerified) {
-                <span class="d-flex align-items-center gap-1">
+  @if (!isLoading()) {
+    @if (jobsPage()!.content.length > 0) {
+      <div>
+        @for (job of jobsPage()!.content; track job.id) {
+          <div class="card border rounded-5 mb-3" [class.border-success]="job.status === 'APPLIED'">
+            <div class="card-body">
+              <div class="small text-secondary mb-2">
+                {{ job.publishedOn | timeAgo }}
+              </div>
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <a [href]="job.url" target="_blank" class="job-title">{{ job.title }}</a>
+              </div>
+
+              <div class="d-flex align-items-center gap-3 text-secondary mb-2 small">
+                @if (job.paymentVerified) {
+                  <span class="d-flex align-items-center gap-1">
                   <i class="bi bi-patch-check-fill verified-icon"></i> Payment verified
                 </span>
-              }
-              @if (job.clientRating) {
-                <span class="d-flex align-items-center gap-1">
+                }
+                @if (job.clientRating) {
+                  <span class="d-flex align-items-center gap-1">
                   @for (star of getRatingStars(job.clientRating); track $index) {
                     <i class="bi bi-star-fill text-warning"></i>
                   }
-                  {{ job.clientRating }}
+                    {{ job.clientRating }}
                 </span>
-              }
-              @if (job.clientTotalSpent) {
-                <span>
+                }
+                @if (job.clientTotalSpent) {
+                  <span>
                   <strong>${{ job.clientTotalSpent | number:'1.0-0' }}+</strong> spent
                 </span>
-              }
-              @if (job.clientCountry) {
-                <span>
+                }
+                @if (job.clientCountry) {
+                  <span>
                   <i class="bi bi-geo-alt"></i> {{ job.clientCountry }}
                 </span>
-              }
-            </div>
-
-            <div class="mb-2">
-              <span class="fw-bold me-3">{{ job.priceString }}</span>
-              <span class="fw-bold text-secondary">{{ job.experienceLevel }}</span>
-            </div>
-
-            @if (job.description) {
-              <div class="mb-3">
-                <div class="job-description-container" [class.expanded]="expandedJobIds()[job.id]">
-                  <p class="job-description text-light mb-0">{{ job.description }}</p>
-                </div>
-                <button class="btn btn-link btn-sm p-0" (click)="toggleDescription(job.id)">
-                  {{ expandedJobIds()[job.id] ? 'less' : 'more' }}
-                </button>
-              </div>
-            }
-
-            @if (job.requiredSkills) {
-              <div class="mb-2">
-                @for (skill of job.requiredSkills; track skill) {
-                  <span class="skill-tag">{{ skill }}</span>
                 }
               </div>
-            }
 
-            <div>
-              <button class="btn btn-outline-primary" (click)="openChatModal(job)">
-                <i class="bi bi-openai"></i>
-              </button>
+              <div class="mb-2">
+                <span class="fw-bold me-3">{{ job.priceString }}</span>
+                <span class="fw-bold text-secondary">{{ job.experienceLevel }}</span>
+              </div>
+
+              @if (job.description) {
+                <div class="mb-3">
+                  <div class="job-description-container" [class.expanded]="jobContexts()[job.id]?.expanded">
+                    <p class="job-description text-light mb-0">{{ job.description }}</p>
+                  </div>
+                  <button class="btn btn-link p-0" (click)="toggleDescription(job.id)">
+                    {{ jobContexts()[job.id]?.expanded ? 'less' : 'more' }}
+                  </button>
+                </div>
+              }
+
+              @if (job.requiredSkills) {
+                <div class="mb-2">
+                  @for (skill of job.requiredSkills; track skill) {
+                    <span class="skill-tag">{{ skill }}</span>
+                  }
+                </div>
+              }
+
+              <div class="d-flex gap-2">
+                <button class="btn btn-sm btn-outline-primary" (click)="openChatModal(job)">
+                  <i class="bi bi-openai"></i> Chat
+                </button>
+                <button class="btn btn-sm"
+                        [ngClass]="{'btn-outline-success': job.status !== 'APPLIED', 'btn-success': job.status === 'APPLIED'}"
+                        (click)="toggleApplied(job)"
+                        [disabled]="jobContexts()[job.id]?.isUpdatingStatus">
+                  <i class="bi bi-check-circle"></i> {{job.status === 'APPLIED' ? 'Applied' : 'Mark as applied'}}
+                </button>
+                <button class="btn btn-sm btn-outline-danger"
+                        (click)="discardJob(job.id)"
+                        [disabled]="jobContexts()[job.id]?.isDiscarding">
+                  <i class="bi bi-trash"></i> Discard
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      }
+        }
 
-      <!-- Pagination -->
-      @if (jobsPage()!.totalPages > 1) {
-        <nav class="mt-4 d-flex justify-content-center">
-          <ul class="pagination">
-            <li class="page-item" [class.disabled]="jobsPage()!.number === 0">
-              <button class="page-link" (click)="onPageChange(currentPage() - 1)">Previous</button>
-            </li>
-            <li class="page-item disabled">
-              <span class="page-link">Page {{ currentPage() }} of {{ jobsPage()!.totalPages }}</span>
-            </li>
-            <li class="page-item" [class.disabled]="jobsPage()!.number + 1 >= jobsPage()!.totalPages">
-              <button class="page-link" (click)="onPageChange(currentPage() + 1)">Next</button>
-            </li>
-          </ul>
-        </nav>
-      }
-    </div>
+        <!-- Pagination -->
+        @if (jobsPage()!.totalPages > 1) {
+          <nav class="mt-4 d-flex justify-content-center">
+            <ul class="pagination">
+              <li class="page-item" [class.disabled]="jobsPage()!.number === 0">
+                <button class="page-link" (click)="onPageChange(currentPage() - 1)">Previous</button>
+              </li>
+              <li class="page-item disabled">
+                <span class="page-link">Page {{ currentPage() }} of {{ jobsPage()!.totalPages }}</span>
+              </li>
+              <li class="page-item" [class.disabled]="jobsPage()!.number + 1 >= jobsPage()!.totalPages">
+                <button class="page-link" (click)="onPageChange(currentPage() + 1)">Next</button>
+              </li>
+            </ul>
+          </nav>
+        }
+      </div>
+    } @else {
+      <div class="text-center">No jobs yet...</div>
+    }
   } @else {
     <div class="text-center pt-4">
       <div class="spinner-border text-success"></div>

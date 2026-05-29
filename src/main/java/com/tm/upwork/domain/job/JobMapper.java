@@ -12,6 +12,7 @@ public class JobMapper {
         job.setTitle(dto.getTitle());
         job.setDescription(dto.getDescription());
         job.setType(dto.getType());
+        job.setStatus(dto.getStatus());
         job.setHourlyRateMin(dto.getHourlyRateMin());
         job.setHourlyRateMax(dto.getHourlyRateMax());
         job.setFixedPrice(dto.getFixedPrice());
@@ -33,6 +34,7 @@ public class JobMapper {
                 .title(job.getTitle())
                 .description(job.getDescription())
                 .type(job.getType())
+                .status(job.getStatus())
                 .hourlyRateMin(job.getHourlyRateMin())
                 .hourlyRateMax(job.getHourlyRateMax())
                 .fixedPrice(job.getFixedPrice())

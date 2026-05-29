@@ -2,10 +2,16 @@ import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { JobService } from '../job.service';
-import { Job, Page } from '../job.model';
+import { Job, JobStatus, Page } from '../job.model';
 import {BsModalService, BsModalRef, ModalModule} from 'ngx-bootstrap/modal';
 import { JobChatModalComponent } from '../../chat/job-chat/job-chat-modal';
 import { TimeAgoPipe } from '../../../util/time-ago.pipe';
+
+interface JobContext {
+  expanded: boolean;
+  isDiscarding: boolean;
+  isUpdatingStatus: boolean;
+}
 
 @Component({
   selector: 'app-job-list',
@@ -16,12 +22,14 @@ import { TimeAgoPipe } from '../../../util/time-ago.pipe';
   styleUrl: './job-list.scss'
 })
 export class JobListComponent implements OnInit {
+  isLoading = signal<boolean>(false);
   jobsPage = signal<Page<Job> | undefined>(undefined);
   currentPage = signal<number>(1);
   pageSize = 10;
   sort = 'publishedOn.desc';
   bsModalRef?: BsModalRef;
-  expandedJobIds = signal<Record<number, boolean>>({});
+  jobContexts = signal<Record<number, JobContext>>({});
+  error = signal<string | undefined>(undefined);
 
   constructor(
     private readonly jobService: JobService,
@@ -29,14 +37,21 @@ export class JobListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.isLoading.set(true);
     this.loadJobs();
   }
 
   loadJobs(): void {
-    this.jobService.getJobs(this.currentPage(), this.pageSize, this.sort)
-      .subscribe(page => {
+    this.jobService.getJobs(this.currentPage(), this.pageSize, this.sort).subscribe({
+      next: (page) => {
+        this.isLoading.set(false);
         this.jobsPage.set(page);
-      });
+      },
+      error: (err) => {
+        this.isLoading.set(false);
+        this.error.set('Failed to load jobs. Please try again later.')
+      }
+    });
   }
 
   openChatModal(job: Job): void {
@@ -65,9 +80,55 @@ export class JobListComponent implements OnInit {
   }
 
   toggleDescription(jobId: number): void {
-    this.expandedJobIds.update(ids => ({
-      ...ids,
-      [jobId]: !ids[jobId]
+    this.jobContexts.update(contexts => ({
+      ...contexts,
+      [jobId]: {
+        ...this.getJobContext(jobId, contexts),
+        expanded: !this.getJobContext(jobId, contexts).expanded
+      }
+    }));
+  }
+
+  private getJobContext(jobId: number, contexts: Record<number, JobContext> = this.jobContexts()): JobContext {
+    return contexts[jobId] || { expanded: false, isDiscarding: false, isUpdatingStatus: false };
+  }
+
+  discardJob(jobId: number): void {
+    if (confirm('Are you sure you want to discard this job?')) {
+      this.updateJobContext(jobId, { isDiscarding: true });
+      this.jobService.discardJob(jobId).subscribe({
+        next: () => {
+          this.updateJobContext(jobId, { isDiscarding: false });
+          this.loadJobs();
+        },
+        error: (err) => {
+          this.updateJobContext(jobId, { isDiscarding: false });
+        }
+      });
+    }
+  }
+
+  toggleApplied(job: Job): void {
+    const newStatus = job.status === JobStatus.APPLIED ? JobStatus.NEW : JobStatus.APPLIED;
+    this.updateJobContext(job.id, { isUpdatingStatus: true });
+    this.jobService.updateJobStatus(job.id, newStatus).subscribe({
+      next: () => {
+        this.updateJobContext(job.id, { isUpdatingStatus: false });
+        job.status = newStatus;
+      },
+      error: (err) => {
+        this.updateJobContext(job.id, { isUpdatingStatus: false });
+      }
+    });
+  }
+
+  private updateJobContext(jobId: number, update: Partial<JobContext>): void {
+    this.jobContexts.update(contexts => ({
+      ...contexts,
+      [jobId]: {
+        ...this.getJobContext(jobId, contexts),
+        ...update
+      }
     }));
   }
 }

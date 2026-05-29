@@ -18,6 +18,7 @@ CREATE TABLE job (
     title VARCHAR(255) NOT NULL,
     description TEXT,
     type VARCHAR(50),
+    status VARCHAR(50) NOT NULL DEFAULT 'NEW',
     hourly_rate_min DOUBLE,
     hourly_rate_max DOUBLE,
     fixed_price DOUBLE,

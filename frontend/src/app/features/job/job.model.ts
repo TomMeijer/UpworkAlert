@@ -11,6 +11,12 @@ export interface Job {
   clientRating?: number;
   clientTotalSpent?: number;
   priceString: string;
+  status?: JobStatus;
+}
+
+export enum JobStatus {
+  NEW = 'NEW',
+  APPLIED = 'APPLIED'
 }
 
 export interface Page<T> {

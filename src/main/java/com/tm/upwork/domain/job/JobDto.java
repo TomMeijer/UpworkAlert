@@ -1,5 +1,6 @@
 package com.tm.upwork.domain.job;
 
+import com.tm.upwork.domain.job.entity.JobStatus;
 import com.tm.upwork.domain.job.entity.JobType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,6 +18,7 @@ public class JobDto {
     private final String title;
     private final String description;
     private final JobType type;
+    private final JobStatus status;
     private final Double hourlyRateMin;
     private final Double hourlyRateMax;
     private final Double fixedPrice;
