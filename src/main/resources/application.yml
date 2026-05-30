@@ -55,3 +55,7 @@ spring:
           useUnicode: true
   flyway:
     schemas: upwork_alert
+
+admin:
+  username:
+  password:
