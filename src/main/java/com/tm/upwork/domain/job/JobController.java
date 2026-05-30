@@ -22,18 +22,15 @@ public class JobController {
     private final JobService jobService;
 
     @GetMapping
-    public Page<JobDto> getJobs(
-            @RequestParam(defaultValue = "publishedOn.desc") String sort,
-            @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int pageSize
-    ) {
+    public Page<JobDto> getJobs(@RequestParam(defaultValue = "publishedOn.desc") String sort,
+                                @RequestParam(defaultValue = "1") int page,
+                                @RequestParam(defaultValue = "10") int pageSize) {
         String[] sortParams = sort.split("\\.");
         String sortField = sortParams[0];
         Sort.Direction direction = Sort.Direction.DESC;
         if (sortParams.length > 1 && "asc".equalsIgnoreCase(sortParams[1])) {
             direction = Sort.Direction.ASC;
         }
-
         Pageable pageable = PageRequest.of(page - 1, pageSize, Sort.by(direction, sortField));
         return jobService.getJobs(pageable);
     }

@@ -21,6 +21,5 @@ export enum JobStatus {
 
 export interface Page<T> {
   content: T[];
-  totalPages: number;
-  number: number;
+  page: {totalPages: number, number: number}
 }

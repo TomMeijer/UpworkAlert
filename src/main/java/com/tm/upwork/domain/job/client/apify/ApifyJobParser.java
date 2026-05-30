@@ -65,7 +65,7 @@ public class ApifyJobParser {
         Pattern pattern = Pattern.compile("~\\d+");
         Matcher matcher = pattern.matcher(url);
         if (matcher.find()) {
-            return "https://www.upwork.com/jobs/" + matcher.group();
+            return "https://www.upwork.com/nx/proposals/job/" + matcher.group() + "/apply/";
         }
         return url;
     }

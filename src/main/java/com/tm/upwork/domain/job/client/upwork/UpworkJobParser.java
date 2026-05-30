@@ -41,7 +41,7 @@ public class UpworkJobParser {
                 .title(node.getString("title"))
                 .description(node.optString("description"))
                 .status(JobStatus.NEW)
-                .url("https://www.upwork.com/jobs/" + node.getString("ciphertext"))
+                .url("https://www.upwork.com/nx/proposals/job/" + node.getString("ciphertext") + "/apply/")
                 .publishedOn(LocalDateTime.parse(node.getString("publishedDateTime"), DateTimeFormatter.ISO_DATE_TIME))
                 .experienceLevel(node.optString("experienceLevel"));
 

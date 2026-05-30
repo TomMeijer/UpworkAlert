@@ -60,7 +60,7 @@ export class JobListComponent implements OnInit {
   }
 
   onPageChange(page: number): void {
-    if (page < 1 || (this.jobsPage() && page > this.jobsPage()!.totalPages)) return;
+    if (page < 1 || (this.jobsPage() && page > this.jobsPage()!.page.totalPages)) return;
     this.currentPage.set(page);
     this.loadJobs();
   }
