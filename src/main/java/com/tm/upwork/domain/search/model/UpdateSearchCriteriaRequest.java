@@ -1,4 +1,4 @@
-package com.tm.upwork.domain.search;
+package com.tm.upwork.domain.search.model;
 
 import lombok.Getter;
 import lombok.Setter;

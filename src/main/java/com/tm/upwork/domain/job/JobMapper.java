@@ -1,6 +1,7 @@
 package com.tm.upwork.domain.job;
 
 import com.tm.upwork.domain.job.entity.Job;
+import com.tm.upwork.domain.job.model.JobDto;
 import org.springframework.stereotype.Component;
 
 @Component

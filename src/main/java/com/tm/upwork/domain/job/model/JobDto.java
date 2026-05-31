@@ -1,4 +1,4 @@
-package com.tm.upwork.domain.job;
+package com.tm.upwork.domain.job.model;
 
 import com.tm.upwork.domain.job.entity.JobStatus;
 import com.tm.upwork.domain.job.entity.JobType;

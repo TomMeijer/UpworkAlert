@@ -1,4 +1,4 @@
-package com.tm.upwork.domain.chat;
+package com.tm.upwork.domain.job.lock;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

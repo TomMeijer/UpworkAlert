@@ -1,4 +1,4 @@
-package com.tm.upwork.domain.chat;
+package com.tm.upwork.domain.chat.model;
 
 import com.tm.upwork.domain.chat.entity.ChatRole;
 import lombok.AllArgsConstructor;

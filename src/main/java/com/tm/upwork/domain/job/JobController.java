@@ -1,6 +1,7 @@
 package com.tm.upwork.domain.job;
 
 import com.tm.upwork.domain.job.entity.JobStatus;
+import com.tm.upwork.domain.job.model.JobDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

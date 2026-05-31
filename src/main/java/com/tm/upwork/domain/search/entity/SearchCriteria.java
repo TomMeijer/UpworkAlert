@@ -1,4 +1,4 @@
-package com.tm.upwork.domain.search;
+package com.tm.upwork.domain.search.entity;
 
 import com.tm.upwork.util.StringListConverter;
 import jakarta.persistence.*;

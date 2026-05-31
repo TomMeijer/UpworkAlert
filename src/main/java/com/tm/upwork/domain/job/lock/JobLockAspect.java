@@ -1,4 +1,4 @@
-package com.tm.upwork.domain.chat;
+package com.tm.upwork.domain.job.lock;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;

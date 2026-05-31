@@ -1,5 +1,7 @@
 package com.tm.upwork.domain.chat;
 
+import com.tm.upwork.domain.chat.model.ChatMessageDto;
+import com.tm.upwork.domain.chat.model.ChatMessageRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +17,7 @@ public class JobChatController {
     private final ChatMessageMapper chatMessageMapper;
 
     @PostMapping("/message")
-    public ChatMessageDto sendMessage(@PathVariable int jobId, @RequestBody @Valid JobChatMessageRequest request) {
+    public ChatMessageDto sendMessage(@PathVariable int jobId, @RequestBody @Valid ChatMessageRequest request) {
         return chatMessageMapper.toDto(jobChatService.sendMessage(jobId, request.getMessage()));
     }
 

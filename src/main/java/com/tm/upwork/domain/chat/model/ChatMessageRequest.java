@@ -1,4 +1,4 @@
-package com.tm.upwork.domain.chat;
+package com.tm.upwork.domain.chat.model;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class JobChatMessageRequest {
+public class ChatMessageRequest {
     @NotBlank(message = "Message cannot be blank")
     private String message;
 }

@@ -1,6 +1,7 @@
 package com.tm.upwork.domain.chat;
 
 import com.tm.upwork.domain.chat.entity.ChatMessage;
+import com.tm.upwork.domain.chat.model.ChatMessageDto;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

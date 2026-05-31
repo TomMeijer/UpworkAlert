@@ -6,6 +6,7 @@ import com.tm.upwork.domain.chat.entity.ChatMessage;
 import com.tm.upwork.domain.chat.entity.ChatRole;
 import com.tm.upwork.domain.job.JobRepository;
 import com.tm.upwork.domain.job.entity.Job;
+import com.tm.upwork.domain.job.lock.JobLock;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

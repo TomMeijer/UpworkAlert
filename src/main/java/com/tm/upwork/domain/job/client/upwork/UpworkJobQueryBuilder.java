@@ -1,6 +1,6 @@
 package com.tm.upwork.domain.job.client.upwork;
 
-import com.tm.upwork.domain.search.SearchCriteria;
+import com.tm.upwork.domain.search.entity.SearchCriteria;
 import com.tm.upwork.domain.search.SearchCriteriaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

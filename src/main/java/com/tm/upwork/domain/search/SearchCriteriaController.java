@@ -1,5 +1,8 @@
 package com.tm.upwork.domain.search;
 
+import com.tm.upwork.domain.search.model.SearchCriteriaDto;
+import com.tm.upwork.domain.search.model.UpdateSearchCriteriaParams;
+import com.tm.upwork.domain.search.model.UpdateSearchCriteriaRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +22,12 @@ public class SearchCriteriaController {
 
     @PutMapping
     public void update(@RequestBody @Valid UpdateSearchCriteriaRequest request) {
-        searchCriteriaService.update(request);
+        searchCriteriaService.update(new UpdateSearchCriteriaParams(
+                request.getMinHourlyRate(),
+                request.getMinFixedPrice(),
+                request.getCategoryIds(),
+                request.getLocations(),
+                request.getSearchExpression()
+        ));
     }
 }

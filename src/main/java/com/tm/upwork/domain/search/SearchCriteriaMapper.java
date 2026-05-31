@@ -1,5 +1,7 @@
 package com.tm.upwork.domain.search;
 
+import com.tm.upwork.domain.search.entity.SearchCriteria;
+import com.tm.upwork.domain.search.model.SearchCriteriaDto;
 import org.springframework.stereotype.Component;
 
 @Component
