@@ -332,7 +332,7 @@ td {
                                                                         <img src="https://www.upwork.com/s/emails/icon-briefcase.png" alt="Client" height="24">
                                                                     </span>
                                                                     <div class="meta-inner">
-                                                                        <span th:text="${job.priceString}" class="meta-item">Price</span>
+                                                                        <span th:text="${job.type.name() == 'FIXED' ? 'Fixed: $' + job.fixedPrice : (job.type.name() == 'HOURLY' ? 'Hourly: $' + job.hourlyRateMin + (job.hourlyRateMax != null ? ' - $' + job.hourlyRateMax : '') : 'Not specified')}" class="meta-item">Price</span>
                                                                         <span th:if="${job.experienceLevel != null}" class="meta-item">•</span>
                                                                         <span th:if="${job.experienceLevel != null}" th:text="${job.experienceLevel}" class="meta-item">Level</span>
                                                                     </div>

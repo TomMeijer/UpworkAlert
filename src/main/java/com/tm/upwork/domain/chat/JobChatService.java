@@ -4,8 +4,8 @@ import com.tm.upwork.domain.chat.client.JobChatClient;
 import com.tm.upwork.domain.chat.entity.Chat;
 import com.tm.upwork.domain.chat.entity.ChatMessage;
 import com.tm.upwork.domain.chat.entity.ChatRole;
-import com.tm.upwork.domain.job.entity.Job;
 import com.tm.upwork.domain.job.JobRepository;
+import com.tm.upwork.domain.job.entity.Job;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,11 +20,10 @@ public class JobChatService {
     private final JobRepository jobRepository;
     private final JobChatClient jobChatClient;
     private final ChatMessageRepository chatMessageRepository;
-    private final ChatMessageMapper chatMessageMapper;
 
     @JobLock(key = "#jobId")
     @Transactional
-    public ChatMessageDto sendMessage(int jobId, String message) {
+    public ChatMessage sendMessage(int jobId, String message) {
         Job job = findJob(jobId);
         if (job.getChat() == null) {
             String externalChatId = jobChatClient.startChat(job);
@@ -33,8 +32,7 @@ public class JobChatService {
         }
         saveMessage(job.getChat(), ChatRole.USER, message);
         String response = jobChatClient.sendMessage(job, message);
-        var assistantMessage = saveMessage(job.getChat(), ChatRole.ASSISTANT, response);
-        return chatMessageMapper.toDto(assistantMessage);
+        return saveMessage(job.getChat(), ChatRole.ASSISTANT, response);
     }
 
     private Job findJob(int id) {
@@ -51,12 +49,11 @@ public class JobChatService {
         return chatMessageRepository.save(chatMessage);
     }
 
-    public List<ChatMessageDto> getChatHistory(int jobId) {
+    public List<ChatMessage> getChatHistory(int jobId) {
         Job job = findJob(jobId);
         if (job.getChat() == null) {
             return List.of();
         }
-        List<ChatMessage> messages = chatMessageRepository.findByChatIdOrderByTimeAsc(job.getChat().getId());
-        return chatMessageMapper.toDtoList(messages);
+        return chatMessageRepository.findByChatIdOrderByTimeAsc(job.getChat().getId());
     }
 }

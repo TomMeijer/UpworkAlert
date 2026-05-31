@@ -1,46 +1,35 @@
 package com.tm.upwork.domain.job.client.upwork;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.tm.upwork.domain.search.SearchCriteria;
+import com.tm.upwork.domain.search.SearchCriteriaService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
+@RequiredArgsConstructor
 public class UpworkJobQueryBuilder {
 
     private static final int PAGE_SIZE = 10;
 
-    @Value("${search.criteria.min-hourly-rate}")
-    private String minHourlyRate;
-
-    @Value("${search.criteria.min-fixed-price}")
-    private String minFixedPrice;
-
-    @Value("${search.criteria.category-ids}")
-    private List<String> categoryIds;
-
-    @Value("${search.criteria.locations}")
-    private List<String> locations;
-
-    @Value("${search.criteria.searchExpression}")
-    private String searchExpression;
+    private final SearchCriteriaService searchCriteriaService;
 
     public String buildQuery() {
+        SearchCriteria criteria = searchCriteriaService.get();
         var filterBuilder = new StringBuilder();
-        if (searchExpression != null && !searchExpression.isEmpty()) {
-            filterBuilder.append(String.format("searchExpression_eq: \"%s\" ", searchExpression));
+        if (criteria.getSearchExpression() != null && !criteria.getSearchExpression().isEmpty()) {
+            filterBuilder.append(String.format("searchExpression_eq: \"%s\" ", criteria.getSearchExpression()));
         }
-        if (categoryIds != null && !categoryIds.isEmpty()) {
-            filterBuilder.append(String.format("categoryIds_any: [%s] ", String.join(",", categoryIds)));
+        if (criteria.getCategoryIds() != null && !criteria.getCategoryIds().isEmpty()) {
+            filterBuilder.append(String.format("categoryIds_any: [%s] ", String.join(",", criteria.getCategoryIds())));
         }
-        if (locations != null && !locations.isEmpty()) {
-            filterBuilder.append(String.format("locations_any: [%s] ", String.join(",", locations)));
+        if (criteria.getLocations() != null && !criteria.getLocations().isEmpty()) {
+            filterBuilder.append(String.format("locations_any: [%s] ", String.join(",", criteria.getLocations())));
         }
-        if (minFixedPrice != null && !minFixedPrice.isEmpty()) {
-            filterBuilder.append(String.format("budgetRange_eq: { rangeStart: %s } ", minFixedPrice));
+        if (criteria.getMinFixedPrice() != null) {
+            filterBuilder.append(String.format("budgetRange_eq: { rangeStart: %s } ", criteria.getMinFixedPrice()));
         }
-        if (minHourlyRate != null && !minHourlyRate.isEmpty()) {
-            filterBuilder.append(String.format("hourlyRate_eq: { rangeStart: %s } ", minHourlyRate));
+        if (criteria.getMinHourlyRate() != null) {
+            filterBuilder.append(String.format("hourlyRate_eq: { rangeStart: %s } ", criteria.getMinHourlyRate()));
         }
         filterBuilder.append(String.format("pagination_eq: { after: \"0\", first: %d } ", PAGE_SIZE));
 

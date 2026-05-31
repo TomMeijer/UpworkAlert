@@ -1,9 +1,8 @@
 package com.tm.upwork.domain.job.client.upwork;
 
-import com.tm.upwork.domain.job.JobDto;
+import com.tm.upwork.domain.job.client.UpworkJob;
 import com.tm.upwork.domain.job.entity.JobStatus;
 import com.tm.upwork.domain.job.entity.JobType;
-import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,13 +13,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
 @Service
 public class UpworkJobParser {
 
-    public List<JobDto> parseJobs(JSONObject response) {
+    public List<UpworkJob> parseJobs(JSONObject response) {
         try {
-            List<JobDto> jobs = new ArrayList<>();
+            List<UpworkJob> jobs = new ArrayList<>();
             JSONArray edges = response.getJSONObject("data")
                     .getJSONObject("marketplaceJobPostingsSearch")
                     .getJSONArray("edges");
@@ -35,9 +33,9 @@ public class UpworkJobParser {
         }
     }
 
-    private JobDto mapToJob(JSONObject node) throws JSONException {
-        var builder = JobDto.builder()
-                .upworkId(node.getString("id"))
+    private UpworkJob mapToJob(JSONObject node) throws JSONException {
+        var builder = UpworkJob.builder()
+                .id(node.getString("id"))
                 .title(node.getString("title"))
                 .description(node.optString("description"))
                 .status(JobStatus.NEW)

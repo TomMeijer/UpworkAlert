@@ -39,7 +39,7 @@ public class Job {
     private String url;
     private LocalDateTime publishedOn;
     private String experienceLevel;
-    private boolean paymentVerified;
+    private Boolean paymentVerified;
     private Double clientRating;
     private Double clientTotalSpent;
 

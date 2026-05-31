@@ -1,4 +1,4 @@
-package com.tm.upwork.domain.job;
+package com.tm.upwork.domain.job.client;
 
 import com.tm.upwork.domain.job.entity.JobStatus;
 import com.tm.upwork.domain.job.entity.JobType;
@@ -12,8 +12,8 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Builder
-public class JobDto {
-    private final Integer id;
+public class UpworkJob {
+    private final String id;
     private final String title;
     private final String description;
     private final JobType type;

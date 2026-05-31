@@ -1,49 +1,39 @@
 package com.tm.upwork.domain.job.client.apify;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.tm.upwork.domain.search.SearchCriteria;
+import com.tm.upwork.domain.search.SearchCriteriaService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.List;
 import java.util.Map;
 
 @Component
+@RequiredArgsConstructor
 public class ApifyInputBuilder {
 
     private static final Map<String, Object> MAX_JOB_AGE = Map.of("value", 1, "unit", "hours");
     private static final int PAGE_SIZE = 10;
 
-    @Value("${search.criteria.min-hourly-rate}")
-    private String minHourlyRate;
-
-    @Value("${search.criteria.min-fixed-price}")
-    private String minFixedPrice;
-
-    @Value("${search.criteria.category-ids}")
-    private List<String> categoryIds;
-
-    @Value("${search.criteria.locations}")
-    private List<String> locations;
-
-    @Value("${search.criteria.searchExpression}")
-    private String searchExpression;
+    private final SearchCriteriaService searchCriteriaService;
 
     public ApifyInput build() {
+        SearchCriteria criteria = searchCriteriaService.get();
         var builder = UriComponentsBuilder.fromUriString("https://www.upwork.com/nx/search/jobs/");
-        if (minFixedPrice != null && !minFixedPrice.isEmpty()) {
-            builder.queryParam("amount", minFixedPrice + "-");
+        if (criteria.getMinFixedPrice() != null) {
+            builder.queryParam("amount", criteria.getMinFixedPrice() + "-");
         }
-        if (categoryIds != null && !categoryIds.isEmpty()) {
-            builder.queryParam("category2_uid", String.join(",", categoryIds));
+        if (criteria.getCategoryIds() != null && !criteria.getCategoryIds().isEmpty()) {
+            builder.queryParam("category2_uid", String.join(",", criteria.getCategoryIds()));
         }
-        if (minHourlyRate != null && !minHourlyRate.isEmpty()) {
-            builder.queryParam("hourly_rate", minHourlyRate + "-");
+        if (criteria.getMinHourlyRate() != null) {
+            builder.queryParam("hourly_rate", criteria.getMinHourlyRate() + "-");
         }
-        if (locations != null && !locations.isEmpty()) {
-            builder.queryParam("location", String.join(",", locations));
+        if (criteria.getLocations() != null && !criteria.getLocations().isEmpty()) {
+            builder.queryParam("location", String.join(",", criteria.getLocations()));
         }
-        if (searchExpression != null && !searchExpression.isEmpty()) {
-            builder.queryParam("q", searchExpression);
+        if (criteria.getSearchExpression() != null && !criteria.getSearchExpression().isEmpty()) {
+            builder.queryParam("q", criteria.getSearchExpression());
         }
         String rawUrl = builder
                 .queryParam("sort", "recency")

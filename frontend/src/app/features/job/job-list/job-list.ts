@@ -2,9 +2,10 @@ import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { JobService } from '../job.service';
-import { Job, JobStatus, Page } from '../job.model';
+import {Job, JobStatus, JobType, Page} from '../job.model';
 import {BsModalService, BsModalRef, ModalModule} from 'ngx-bootstrap/modal';
 import { JobChatModalComponent } from '../../chat/job-chat/job-chat-modal';
+import { SearchCriteriaModalComponent } from '../../search-criteria/search-criteria-modal/search-criteria-modal';
 import { TimeAgoPipe } from '../../../util/time-ago.pipe';
 
 interface JobContext {
@@ -57,6 +58,10 @@ export class JobListComponent implements OnInit {
   openChatModal(job: Job): void {
     const initialState = {setJob: job};
     this.bsModalRef = this.modalService.show(JobChatModalComponent, { initialState, class: 'modal-lg' });
+  }
+
+  openSearchCriteriaModal(): void {
+    this.bsModalRef = this.modalService.show(SearchCriteriaModalComponent, { class: 'modal-lg' });
   }
 
   onPageChange(page: number): void {
@@ -130,5 +135,18 @@ export class JobListComponent implements OnInit {
         ...update
       }
     }));
+  }
+
+  formatPrice(job: Job): string {
+    if (job.type == JobType.FIXED) {
+      return 'Fixed: $' + job.fixedPrice;
+    } else if (job.type == JobType.HOURLY) {
+      let hourlyString = 'Hourly: $' + job.hourlyRateMin;
+      if (job.hourlyRateMax != null) {
+        hourlyString += ' - $' + job.hourlyRateMax;
+      }
+      return hourlyString;
+    }
+    return 'Not specified';
   }
 }

@@ -1,5 +1,6 @@
 package com.tm.upwork.domain.job;
 
+import com.tm.upwork.domain.job.client.UpworkJob;
 import com.tm.upwork.domain.job.entity.Job;
 import com.tm.upwork.domain.job.entity.JobStatus;
 import lombok.RequiredArgsConstructor;
@@ -13,26 +14,40 @@ import org.springframework.transaction.annotation.Transactional;
 public class JobService {
     
     private final JobRepository jobRepository;
-    private final JobMapper jobMapper;
 
     @Transactional
-    public void saveJob(JobDto jobDto) {
-        Job job = jobMapper.mapToEntity(jobDto);
+    public void save(UpworkJob upworkJob) {
+        var job = new Job();
+        job.setUpworkId(upworkJob.getId());
+        job.setTitle(upworkJob.getTitle());
+        job.setDescription(upworkJob.getDescription());
+        job.setType(upworkJob.getType());
+        job.setStatus(upworkJob.getStatus());
+        job.setHourlyRateMin(upworkJob.getHourlyRateMin());
+        job.setHourlyRateMax(upworkJob.getHourlyRateMax());
+        job.setFixedPrice(upworkJob.getFixedPrice());
+        job.setClientCountry(upworkJob.getClientCountry());
+        job.setRequiredSkills(upworkJob.getRequiredSkills());
+        job.setUrl(upworkJob.getUrl());
+        job.setPublishedOn(upworkJob.getPublishedOn());
+        job.setExperienceLevel(upworkJob.getExperienceLevel());
+        job.setPaymentVerified(upworkJob.getPaymentVerified());
+        job.setClientRating(upworkJob.getClientRating());
+        job.setClientTotalSpent(upworkJob.getClientTotalSpent());
         jobRepository.save(job);
     }
 
-    public Page<JobDto> getJobs(Pageable pageable) {
-        return jobRepository.findAll(pageable)
-                .map(jobMapper::mapToDto);
+    public Page<Job> getPage(Pageable pageable) {
+        return jobRepository.findAll(pageable);
     }
 
     @Transactional
-    public void deleteJob(Integer id) {
+    public void delete(int id) {
         jobRepository.deleteById(id);
     }
 
     @Transactional
-    public void updateJobStatus(int id, JobStatus status) {
+    public void updateStatus(int id, JobStatus status) {
         Job job = jobRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Job not found with id: " + id));
         job.setStatus(status);

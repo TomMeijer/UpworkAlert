@@ -1,0 +1,14 @@
+.category-grid, .location-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid #495057;
+  border-radius: 0.25rem;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.form-check-label {
+  font-size: 0.9rem;
+}

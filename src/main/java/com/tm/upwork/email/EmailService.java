@@ -1,6 +1,6 @@
 package com.tm.upwork.email;
 
-import com.tm.upwork.domain.job.JobDto;
+import com.tm.upwork.domain.job.client.UpworkJob;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class EmailService {
     @Value("${spring.mail.to}")
     private String to;
 
-    public void sendJobNotification(JobDto job) {
+    public void sendJobNotification(UpworkJob job) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(
@@ -46,7 +46,7 @@ public class EmailService {
         }
     }
 
-    private String buildEmailBody(JobDto job) {
+    private String buildEmailBody(UpworkJob job) {
         Context context = new Context();
         context.setVariable("job", job);
         return templateEngine.process("job-notification", context);

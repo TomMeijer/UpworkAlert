@@ -1,7 +1,7 @@
 package com.tm.upwork.domain.job.client.apify;
 
-import com.tm.upwork.domain.job.JobDto;
 import com.tm.upwork.domain.job.client.JobClient;
+import com.tm.upwork.domain.job.client.UpworkJob;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ public class ApifyJobClient implements JobClient {
     private final ApifyInputBuilder apifyInputBuilder;
 
     @Override
-    public List<JobDto> fetchNewJobs() {
+    public List<UpworkJob> fetchNewJobs() {
         ApifyInput input = apifyInputBuilder.build();
         List<ApifyJob> apifyJobs = apifyJobDownloader.runSyncGetDatasetItems(input);
         return apifyJobParser.parseJobs(apifyJobs);

@@ -10,14 +10,6 @@ openai:
   api-key:
   vector-store-id:
 
-search:
-  criteria:
-    min-hourly-rate: 35
-    min-fixed-price: 100
-    category-ids: 531770282580668418
-    locations: Europe,Asia
-    searchExpression: (Java OR Spring OR Angular)
-
 notifications:
   email:
     enabled: false

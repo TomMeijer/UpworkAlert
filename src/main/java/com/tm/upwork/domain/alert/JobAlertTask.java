@@ -1,9 +1,9 @@
 package com.tm.upwork.domain.alert;
 
 import com.google.common.collect.EvictingQueue;
-import com.tm.upwork.domain.job.JobDto;
 import com.tm.upwork.domain.job.JobService;
 import com.tm.upwork.domain.job.client.JobClient;
+import com.tm.upwork.domain.job.client.UpworkJob;
 import com.tm.upwork.email.EmailService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,15 +41,15 @@ public class JobAlertTask {
         log.info("Checking for new Upwork jobs.");
         try {
             log.info("Fetching jobs from Upwork...");
-            List<JobDto> jobs = jobClient.fetchNewJobs();
+            List<UpworkJob> jobs = jobClient.fetchNewJobs();
             log.info("{} jobs fetched.", jobs.size());
-            for (JobDto job : jobs) {
-                if (!processedJobIds.contains(job.getUpworkId())) {
+            for (UpworkJob job : jobs) {
+                if (!processedJobIds.contains(job.getId())) {
                     saveJob(job);
                     if (emailEnabled) {
                         sendNotification(job);
                     }
-                    processedJobIds.add(job.getUpworkId());
+                    processedJobIds.add(job.getId());
                 }
             }
         } catch (Exception e) {
@@ -58,16 +58,16 @@ public class JobAlertTask {
         log.info("Job check finished.");
     }
 
-    private void saveJob(JobDto job) {
+    private void saveJob(UpworkJob job) {
         log.info("Saving new job: {}", job.getTitle());
         try {
-            jobService.saveJob(job);
+            jobService.save(job);
         } catch (Exception e) {
             log.error("Failed to save job.", e);
         }
     }
 
-    private void sendNotification(JobDto job) {
+    private void sendNotification(UpworkJob job) {
         log.info("Sending email notification.");
         try {
             emailService.sendJobNotification(job);

@@ -1,6 +1,6 @@
 package com.tm.upwork.domain.job.client.apify;
 
-import com.tm.upwork.domain.job.JobDto;
+import com.tm.upwork.domain.job.client.UpworkJob;
 import com.tm.upwork.domain.job.entity.JobStatus;
 import com.tm.upwork.domain.job.entity.JobType;
 import org.springframework.stereotype.Component;
@@ -15,15 +15,15 @@ import java.util.regex.Pattern;
 @Component
 public class ApifyJobParser {
 
-    public List<JobDto> parseJobs(List<ApifyJob> apifyJobs) {
+    public List<UpworkJob> parseJobs(List<ApifyJob> apifyJobs) {
         return apifyJobs.stream()
                 .map(this::mapToJob)
                 .toList();
     }
 
-    private JobDto mapToJob(ApifyJob apifyJob) {
-        var builder = JobDto.builder()
-                .upworkId(Objects.requireNonNull(apifyJob.getId(), "upworkId must not be null."))
+    private UpworkJob mapToJob(ApifyJob apifyJob) {
+        var builder = UpworkJob.builder()
+                .id(Objects.requireNonNull(apifyJob.getId(), "id must not be null."))
                 .title(Objects.requireNonNull(apifyJob.getTitle(), "title must not be null."))
                 .description(apifyJob.getDescription())
                 .status(JobStatus.NEW)
