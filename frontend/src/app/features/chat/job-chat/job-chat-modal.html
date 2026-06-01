@@ -4,25 +4,33 @@
     <span aria-hidden="true" class="visually-hidden">&times;</span>
   </button>
 </div>
-<div class="modal-body chat-container" #scrollContainer [class.empty]="isLoading() || messages().length === 0">
-  @if (!isLoading()) {
+<div class="modal-body chat-container"
+     #scrollContainer
+     [class.empty]="!loadingError() && (isLoading() || messages().length === 0)">
+  @if (loadingError()) {
+    <div class="alert alert-danger">
+      {{ loadingError() }}
+    </div>
+  } @else if (isLoading()) {
+    <div class="text-center">
+      <div class="spinner-border text-success"></div>
+    </div>
+  } @else if (messages().length === 0) {
+    <div class="welcome-container">
+      <div class="welcome-text text-muted">
+        Hello! I can help you apply for this job posting. What would you like to do?
+      </div>
+      <div class="quick-actions">
+        <button class="btn btn-outline-primary" (click)="sendAction('Write a cover letter.')">
+          Write cover letter
+        </button>
+        <button class="btn btn-outline-primary" (click)="sendAction('Summarize this job posting.')">
+          Summarize posting
+        </button>
+      </div>
+    </div>
+  } @else {
     <div class="messages-list">
-      @if (messages().length === 0) {
-        <div class="welcome-container">
-          <div class="welcome-text text-muted">
-            Hello! I can help you apply for this job posting. What would you like to do?
-          </div>
-          <div class="quick-actions">
-            <button class="btn btn-outline-primary" (click)="sendAction('Write a cover letter.')">
-              Write cover letter
-            </button>
-            <button class="btn btn-outline-primary" (click)="sendAction('Summarize this job posting.')">
-              Summarize posting
-            </button>
-          </div>
-        </div>
-      }
-
       @for (msg of messages(); track $index) {
         <div class="chat-message" [ngClass]="{'user-message': msg.role === 'USER', 'bot-message': msg.role === 'ASSISTANT'}">
           <div class="message-content">
@@ -42,23 +50,19 @@
       @if (isTyping()) {
         <div class="chat-message bot-message">
           <div class="message-content">
-          <span class="typing-dots">
-            <span>.</span><span>.</span><span>.</span>
-          </span>
+            <span class="typing-dots">
+              <span>.</span><span>.</span><span>.</span>
+            </span>
           </div>
         </div>
       }
+    </div>
 
-      @if (error()) {
-        <div class="alert alert-danger mt-2">
-          {{ error() }}
-        </div>
-      }
-    </div>
-  } @else {
-    <div class="text-center">
-      <div class="spinner-border text-success"></div>
-    </div>
+    @if (chatError()) {
+      <div class="alert alert-danger mt-2 mb-0">
+        {{ chatError() }}
+      </div>
+    }
   }
 </div>
 <div class="modal-footer">
@@ -69,12 +73,12 @@
            [ngModel]="newMessage()"
            (ngModelChange)="newMessage.set($event)"
            (keyup.enter)="sendMessage()"
-           [disabled]="isLoading() || isTyping()"
+           [disabled]="loadingError() || isLoading() || isTyping()"
     >
     <button class="btn btn-primary"
             type="button"
             (click)="sendMessage()"
-            [disabled]="isLoading() || isTyping() || !newMessage().trim()"
+            [disabled]="loadingError() || isLoading() || isTyping() || !newMessage().trim()"
     >
       Send
     </button>

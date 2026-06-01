@@ -19,7 +19,8 @@ export class JobChatModalComponent implements OnInit {
   messages = signal<ChatMessage[]>([]);
   newMessage = signal<string>('');
   isTyping = signal<boolean>(false);
-  error = signal<string | undefined>(undefined);
+  loadingError = signal<string | undefined>(undefined);
+  chatError = signal<string | undefined>(undefined);
 
   @ViewChild('scrollContainer')
   private readonly scrollContainer!: ElementRef;
@@ -49,7 +50,7 @@ export class JobChatModalComponent implements OnInit {
       },
       error: (err) => {
         this.isLoading.set(false);
-        this.error.set('Failed to load chat history.');
+        this.loadingError.set('Failed to load chat history.');
       }
     });
   }
@@ -76,7 +77,7 @@ export class JobChatModalComponent implements OnInit {
     const messageToSend = currentNewMessage;
     this.newMessage.set('');
     this.isTyping.set(true);
-    this.error.set(undefined);
+    this.chatError.set(undefined);
 
     this.chatService.sendMessage(currentJob.id, messageToSend).subscribe({
       next: (response) => {
@@ -86,7 +87,7 @@ export class JobChatModalComponent implements OnInit {
       },
       error: (err) => {
         this.isTyping.set(false);
-        this.error.set('Failed to send message. Please try again.');
+        this.chatError.set('Failed to send message. Please try again.');
       }
     });
   }

@@ -10,9 +10,7 @@
     <div class="alert alert-danger">
       {{ error() }}
     </div>
-  }
-
-  @if (isLoading()) {
+  } @else if (isLoading()) {
     <div class="text-center p-3">
       <div class="spinner-border text-success"></div>
     </div>
@@ -95,7 +93,7 @@
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-secondary" (click)="bsModalRef.hide()">Cancel</button>
-  <button type="button" class="btn btn-primary" [disabled]="isLoading() || isSaving()" (click)="save()">
+  <button type="button" class="btn btn-primary" [disabled]="error() || isLoading() || isSaving()" (click)="save()">
     Save changes
   </button>
 </div>
