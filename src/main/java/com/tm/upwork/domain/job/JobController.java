@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 public class JobController {
 
     private final JobService jobService;
-    private final JobMapper jobMapper;
 
     @GetMapping
     public Page<JobDto> getPage(@RequestParam(defaultValue = "publishedOn.desc") String sort,
@@ -28,7 +27,7 @@ public class JobController {
             direction = Sort.Direction.ASC;
         }
         Pageable pageable = PageRequest.of(page - 1, pageSize, Sort.by(direction, sortField));
-        return jobService.getPage(pageable).map(jobMapper::toDto);
+        return jobService.getPage(pageable);
     }
 
     @DeleteMapping("/{id}")

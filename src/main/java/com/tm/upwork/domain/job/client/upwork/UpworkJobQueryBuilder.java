@@ -1,7 +1,7 @@
 package com.tm.upwork.domain.job.client.upwork;
 
-import com.tm.upwork.domain.search.entity.SearchCriteria;
 import com.tm.upwork.domain.search.SearchCriteriaService;
+import com.tm.upwork.domain.search.model.SearchCriteriaDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +14,7 @@ public class UpworkJobQueryBuilder {
     private final SearchCriteriaService searchCriteriaService;
 
     public String buildQuery() {
-        SearchCriteria criteria = searchCriteriaService.get();
+        SearchCriteriaDto criteria = searchCriteriaService.get();
         var filterBuilder = new StringBuilder();
         if (criteria.getSearchExpression() != null && !criteria.getSearchExpression().isEmpty()) {
             filterBuilder.append(String.format("searchExpression_eq: \"%s\" ", criteria.getSearchExpression()));

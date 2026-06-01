@@ -1,7 +1,7 @@
 package com.tm.upwork.domain.job.client.apify;
 
-import com.tm.upwork.domain.search.entity.SearchCriteria;
 import com.tm.upwork.domain.search.SearchCriteriaService;
+import com.tm.upwork.domain.search.model.SearchCriteriaDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -18,7 +18,7 @@ public class ApifyInputBuilder {
     private final SearchCriteriaService searchCriteriaService;
 
     public ApifyInput build() {
-        SearchCriteria criteria = searchCriteriaService.get();
+        SearchCriteriaDto criteria = searchCriteriaService.get();
         var builder = UriComponentsBuilder.fromUriString("https://www.upwork.com/nx/search/jobs/");
         if (criteria.getMinFixedPrice() != null) {
             builder.queryParam("amount", criteria.getMinFixedPrice() + "-");

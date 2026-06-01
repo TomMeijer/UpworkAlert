@@ -3,6 +3,7 @@ package com.tm.upwork.domain.job;
 import com.tm.upwork.domain.job.client.UpworkJob;
 import com.tm.upwork.domain.job.entity.Job;
 import com.tm.upwork.domain.job.entity.JobStatus;
+import com.tm.upwork.domain.job.model.JobDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class JobService {
     
     private final JobRepository jobRepository;
+    private final JobMapper jobMapper;
 
     @Transactional
     public void save(UpworkJob upworkJob) {
@@ -37,8 +39,8 @@ public class JobService {
         jobRepository.save(job);
     }
 
-    public Page<Job> getPage(Pageable pageable) {
-        return jobRepository.findAll(pageable);
+    public Page<JobDto> getPage(Pageable pageable) {
+        return jobRepository.findAll(pageable).map(jobMapper::toDto);
     }
 
     @Transactional

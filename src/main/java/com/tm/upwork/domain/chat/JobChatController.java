@@ -14,15 +14,14 @@ import java.util.List;
 public class JobChatController {
 
     private final JobChatService jobChatService;
-    private final ChatMessageMapper chatMessageMapper;
 
     @PostMapping("/message")
     public ChatMessageDto sendMessage(@PathVariable int jobId, @RequestBody @Valid ChatMessageRequest request) {
-        return chatMessageMapper.toDto(jobChatService.sendMessage(jobId, request.getMessage()));
+        return jobChatService.sendMessage(jobId, request.getMessage());
     }
 
     @GetMapping("/messages")
     public List<ChatMessageDto> getChatHistory(@PathVariable int jobId) {
-        return chatMessageMapper.toDtoList(jobChatService.getChatHistory(jobId));
+        return jobChatService.getChatHistory(jobId);
     }
 }

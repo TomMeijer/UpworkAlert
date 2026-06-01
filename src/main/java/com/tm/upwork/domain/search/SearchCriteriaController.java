@@ -13,11 +13,10 @@ import org.springframework.web.bind.annotation.*;
 public class SearchCriteriaController {
 
     private final SearchCriteriaService searchCriteriaService;
-    private final SearchCriteriaMapper searchCriteriaMapper;
 
     @GetMapping
     public SearchCriteriaDto get() {
-        return searchCriteriaMapper.toDto(searchCriteriaService.get());
+        return searchCriteriaService.get();
     }
 
     @PutMapping

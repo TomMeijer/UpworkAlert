@@ -41,7 +41,6 @@ UpworkAlert is a job monitoring and analysis tool designed to help freelancers t
    - Set `apify.token`.
    - Set `openai.api-key` and `openai.vector-store-id`.
    - (Optional) Configure `spring.mail` if email notifications are enabled.
-   - Adjust `search.criteria` to match your target jobs.
 
 ### Running the Application
 

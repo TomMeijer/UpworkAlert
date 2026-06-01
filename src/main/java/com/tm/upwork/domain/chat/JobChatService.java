@@ -4,6 +4,7 @@ import com.tm.upwork.domain.chat.client.JobChatClient;
 import com.tm.upwork.domain.chat.entity.Chat;
 import com.tm.upwork.domain.chat.entity.ChatMessage;
 import com.tm.upwork.domain.chat.entity.ChatRole;
+import com.tm.upwork.domain.chat.model.ChatMessageDto;
 import com.tm.upwork.domain.job.JobRepository;
 import com.tm.upwork.domain.job.entity.Job;
 import com.tm.upwork.domain.job.lock.JobLock;
@@ -21,10 +22,11 @@ public class JobChatService {
     private final JobRepository jobRepository;
     private final JobChatClient jobChatClient;
     private final ChatMessageRepository chatMessageRepository;
+    private final ChatMessageMapper chatMessageMapper;
 
     @JobLock(key = "#jobId")
     @Transactional
-    public ChatMessage sendMessage(int jobId, String message) {
+    public ChatMessageDto sendMessage(int jobId, String message) {
         Job job = findJob(jobId);
         if (job.getChat() == null) {
             String externalChatId = jobChatClient.startChat(job);
@@ -33,7 +35,8 @@ public class JobChatService {
         }
         saveMessage(job.getChat(), ChatRole.USER, message);
         String response = jobChatClient.sendMessage(job, message);
-        return saveMessage(job.getChat(), ChatRole.ASSISTANT, response);
+        var assistantMessage = saveMessage(job.getChat(), ChatRole.ASSISTANT, response);
+        return chatMessageMapper.toDto(assistantMessage);
     }
 
     private Job findJob(int id) {
@@ -50,11 +53,12 @@ public class JobChatService {
         return chatMessageRepository.save(chatMessage);
     }
 
-    public List<ChatMessage> getChatHistory(int jobId) {
+    public List<ChatMessageDto> getChatHistory(int jobId) {
         Job job = findJob(jobId);
         if (job.getChat() == null) {
             return List.of();
         }
-        return chatMessageRepository.findByChatIdOrderByTimeAsc(job.getChat().getId());
+        List<ChatMessage> messages = chatMessageRepository.findByChatIdOrderByTimeAsc(job.getChat().getId());
+        return chatMessageMapper.toDtoList(messages);
     }
 }
