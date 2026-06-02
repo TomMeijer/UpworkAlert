@@ -6,6 +6,7 @@ import {Job, JobStatus, JobType, Page} from '../job.model';
 import {BsModalService, BsModalRef, ModalModule} from 'ngx-bootstrap/modal';
 import { JobChatModalComponent } from '../../chat/job-chat/job-chat-modal';
 import { SearchCriteriaModalComponent } from '../../search-criteria/search-criteria-modal/search-criteria-modal';
+import { NotificationSettingsModalComponent } from '../../notification-settings/notification-settings-modal/notification-settings-modal';
 import { TimeAgoPipe } from '../../../util/time-ago.pipe';
 
 interface JobContext {
@@ -62,6 +63,10 @@ export class JobListComponent implements OnInit {
 
   openSearchCriteriaModal(): void {
     this.bsModalRef = this.modalService.show(SearchCriteriaModalComponent, { class: 'modal-lg' });
+  }
+
+  openNotificationSettingsModal(): void {
+    this.bsModalRef = this.modalService.show(NotificationSettingsModalComponent, { class: 'modal-lg' });
   }
 
   onPageChange(page: number): void {

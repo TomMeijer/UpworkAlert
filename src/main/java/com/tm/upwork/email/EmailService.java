@@ -16,17 +16,13 @@ import java.nio.charset.StandardCharsets;
 @Service
 @RequiredArgsConstructor
 public class EmailService {
-
     private final JavaMailSender mailSender;
     private final TemplateEngine templateEngine;
 
     @Value("${spring.mail.from}")
     private String from;
 
-    @Value("${spring.mail.to}")
-    private String to;
-
-    public void sendJobNotification(UpworkJob job) {
+    public void sendJobNotification(UpworkJob job, String recipient) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(
@@ -36,7 +32,7 @@ public class EmailService {
             );
 
             helper.setFrom(from);
-            helper.setTo(to);
+            helper.setTo(recipient);
             helper.setSubject("New job: " + job.getTitle());
             helper.setText(buildEmailBody(job), true);
 

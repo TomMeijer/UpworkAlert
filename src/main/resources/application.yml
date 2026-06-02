@@ -10,10 +10,6 @@ openai:
   api-key:
   vector-store-id:
 
-notifications:
-  email:
-    enabled: false
-
 spring:
   mail:
     host:
@@ -27,7 +23,6 @@ spring:
           starttls:
             enable: true
     from:
-    to:
   datasource:
     url: jdbc:mysql://localhost:3306/upwork_alert
     username:

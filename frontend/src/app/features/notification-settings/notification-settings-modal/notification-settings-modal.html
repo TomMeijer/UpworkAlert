@@ -1,0 +1,49 @@
+<form #settingsForm="ngForm" [class.was-validated]="formInvalid()">
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Notification Settings</h4>
+    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    @if (error()) {
+      <div class="alert alert-danger">
+        {{ error() }}
+      </div>
+    } @else if (isLoading()) {
+      <div class="text-center p-3">
+        <div class="spinner-border text-success"></div>
+      </div>
+    } @else {
+      <div class="form-check form-switch mb-3">
+        <input class="form-check-input"
+               type="checkbox"
+               id="emailEnabled"
+               name="emailEnabled"
+               [ngModel]="settings().emailEnabled"
+               (ngModelChange)="settings.update(s => ({...s, emailEnabled: $event}))">
+        <label class="form-check-label" for="emailEnabled">Enable Email Notifications</label>
+      </div>
+      <div class="mb-3">
+        <label for="recipientEmail" class="form-label">Recipient Email</label>
+        <input type="email"
+               class="form-control"
+               id="recipientEmail"
+               name="recipientEmail"
+               [required]="settings().emailEnabled"
+               [disabled]="!settings().emailEnabled"
+               [ngModel]="settings().recipientEmail"
+               (ngModelChange)="settings.update(s => ({...s, recipientEmail: $event}))">
+      </div>
+    }
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="bsModalRef.hide()">Cancel</button>
+    <button type="button"
+            class="btn btn-primary"
+            [disabled]="error() || isLoading() || isSaving()"
+            (click)="save(settingsForm)">
+      Save changes
+    </button>
+  </div>
+</form>
