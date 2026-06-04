@@ -47,4 +47,4 @@ admin:
   username:
   password:
 
-frontend.url: http://locahost:4200
+frontend.url: http://localhost:4200

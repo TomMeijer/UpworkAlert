@@ -349,8 +349,8 @@ td {
                                                                         <img src="https://www.upwork.com/s/emails/icon-avatar.png" alt="Client" height="24">
                                                                     </span>
                                                                     <div class="meta-inner">
-                                                                        <span th:if="${Boolean.TRUE.equals(job.paymentVerified)}" class="meta-item">Payment verified</span>
-                                                                        <div th:if="${Boolean.TRUE.equals(job.paymentVerified)}" class="meta-img-verified">
+                                                                        <span th:if="${job.paymentVerified != null && job.paymentVerified.booleanValue()}" class="meta-item">Payment verified</span>
+                                                                        <div th:if="${job.paymentVerified != null && job.paymentVerified.booleanValue()}" class="meta-img-verified">
                                                                             <img src="https://www.upwork.com/s/emails/growth/badge/payment-verified-badge.png" alt="verified" height="14" class="img-middle">
                                                                         </div>
                                                                         <span th:if="${job.clientRating != null}" class="meta-item">•</span>
