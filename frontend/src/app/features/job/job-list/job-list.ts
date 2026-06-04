@@ -1,6 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { JobService } from '../job.service';
 import {Job, JobStatus, JobType, Page} from '../job.model';
 import {BsModalService, BsModalRef, ModalModule} from 'ngx-bootstrap/modal';
@@ -18,7 +19,7 @@ interface JobContext {
 @Component({
   selector: 'app-job-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, ModalModule, TimeAgoPipe],
+  imports: [CommonModule, FormsModule, ModalModule, TimeAgoPipe, RouterModule],
   providers: [BsModalService],
   templateUrl: './job-list.html',
   styleUrl: './job-list.scss'

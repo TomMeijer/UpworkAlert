@@ -4,7 +4,7 @@ import com.google.common.collect.EvictingQueue;
 import com.tm.upwork.domain.job.JobService;
 import com.tm.upwork.domain.job.client.JobClient;
 import com.tm.upwork.domain.job.client.UpworkJob;
-import com.tm.upwork.domain.notification.NotificationSettingsRepository;
+import com.tm.upwork.domain.job.model.JobDto;
 import com.tm.upwork.domain.notification.NotificationSettingsService;
 import com.tm.upwork.email.EmailService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Queue;
 
 @Component
@@ -36,8 +37,7 @@ public class JobAlertTask {
             log.info("{} jobs fetched.", jobs.size());
             for (UpworkJob job : jobs) {
                 if (!processedJobIds.contains(job.getId())) {
-                    saveJob(job);
-                    sendNotification(job);
+                    saveJob(job).ifPresent(this::sendNotification);
                     processedJobIds.add(job.getId());
                 }
             }
@@ -47,16 +47,17 @@ public class JobAlertTask {
         log.info("Job check finished.");
     }
 
-    private void saveJob(UpworkJob job) {
+    private Optional<JobDto> saveJob(UpworkJob job) {
         log.info("Saving new job: {}", job.getTitle());
         try {
-            jobService.save(job);
+            return Optional.of(jobService.save(job));
         } catch (Exception e) {
             log.error("Failed to save job.", e);
+            return Optional.empty();
         }
     }
 
-    private void sendNotification(UpworkJob job) {
+    private void sendNotification(JobDto job) {
         var settings = notificationSettingsService.get();
         if (!settings.isEmailEnabled()) {
             return;

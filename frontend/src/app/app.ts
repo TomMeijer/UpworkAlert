@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
-import { JobListComponent } from './features/job/job-list/job-list';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [JobListComponent],
+  imports: [RouterOutlet],
   template: `
     <main class="min-vh-100">
-      <app-job-list></app-job-list>
+      <router-outlet></router-outlet>
     </main>
   `,
   styles: [],

@@ -30,6 +30,11 @@ public class JobController {
         return jobService.getPage(pageable);
     }
 
+    @GetMapping("/{id}")
+    public JobDto getById(@PathVariable int id) {
+        return jobService.getById(id);
+    }
+
     @DeleteMapping("/{id}")
     public void delete(@PathVariable int id) {
         jobService.delete(id);

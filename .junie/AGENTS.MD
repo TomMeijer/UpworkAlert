@@ -6,7 +6,12 @@
 
 ## Backend (Spring Boot)
 - Never directly return JPA entities from controllers, instead use mapper classes to map them to DTO's.
-- Use Lombok for boilerplate code like getters, setters and constructors. Don't use @Value and @Data.
+- Make DTO's immutable by default.
+- Use Lombok for boilerplate code like getters, setters, constructors and builders. Don't use @Value and @Data.
+- Use dedicated request objects to encapsulate request data received by controllers.
+- Use Jakarta validation to validate request object fields.
+- Don't pass request objects directly to services, instead use dedicated parameter objects to encapsulate service method parameters.
+- Make parameter objects immutable by default.
 
 ## Frontend (Angular)
 - Prefer SCSS to regular CSS.

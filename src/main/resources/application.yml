@@ -46,3 +46,5 @@ spring:
 admin:
   username:
   password:
+
+frontend.url: http://locahost:4200

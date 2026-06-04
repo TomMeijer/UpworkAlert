@@ -1,6 +1,7 @@
 package com.tm.upwork.domain.notification;
 
 import com.tm.upwork.domain.notification.model.NotificationSettingsDto;
+import com.tm.upwork.domain.notification.model.UpdateNotificationSettingsParams;
 import com.tm.upwork.domain.notification.model.UpdateNotificationSettingsRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,9 @@ public class NotificationSettingsController {
 
     @PutMapping
     public void update(@RequestBody @Valid UpdateNotificationSettingsRequest request) {
-        notificationSettingsService.update(request);
+        notificationSettingsService.update(new UpdateNotificationSettingsParams(
+                request.isEmailEnabled(),
+                request.getRecipientEmail()
+        ));
     }
 }

@@ -18,7 +18,7 @@ public class JobService {
     private final JobMapper jobMapper;
 
     @Transactional
-    public void save(UpworkJob upworkJob) {
+    public JobDto save(UpworkJob upworkJob) {
         var job = new Job();
         job.setUpworkId(upworkJob.getId());
         job.setTitle(upworkJob.getTitle());
@@ -36,11 +36,18 @@ public class JobService {
         job.setPaymentVerified(upworkJob.getPaymentVerified());
         job.setClientRating(upworkJob.getClientRating());
         job.setClientTotalSpent(upworkJob.getClientTotalSpent());
-        jobRepository.save(job);
+        job = jobRepository.save(job);
+        return jobMapper.toDto(job);
     }
 
     public Page<JobDto> getPage(Pageable pageable) {
         return jobRepository.findAll(pageable).map(jobMapper::toDto);
+    }
+
+    public JobDto getById(int id) {
+        return jobRepository.findById(id)
+                .map(jobMapper::toDto)
+                .orElseThrow(() -> new IllegalArgumentException("Job not found with id: " + id));
     }
 
     @Transactional

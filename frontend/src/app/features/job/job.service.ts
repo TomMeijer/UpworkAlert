@@ -19,6 +19,10 @@ export class JobService {
     return this.http.get<Page<Job>>(this.basePath, { params });
   }
 
+  getJob(id: number): Observable<Job> {
+    return this.http.get<Job>(`${this.basePath}/${id}`);
+  }
+
   discardJob(id: number): Observable<void> {
     return this.http.delete<void>(`${this.basePath}/${id}`);
   }

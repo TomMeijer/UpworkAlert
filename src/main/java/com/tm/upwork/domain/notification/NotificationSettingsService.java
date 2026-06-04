@@ -2,7 +2,7 @@ package com.tm.upwork.domain.notification;
 
 import com.tm.upwork.domain.notification.entity.NotificationSettings;
 import com.tm.upwork.domain.notification.model.NotificationSettingsDto;
-import com.tm.upwork.domain.notification.model.UpdateNotificationSettingsRequest;
+import com.tm.upwork.domain.notification.model.UpdateNotificationSettingsParams;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,11 +21,11 @@ public class NotificationSettingsService {
     }
 
     @Transactional
-    public void update(UpdateNotificationSettingsRequest request) {
+    public void update(UpdateNotificationSettingsParams params) {
         NotificationSettings settings = notificationSettingsRepository.findFirstByOrderByIdAsc()
                 .orElseThrow(() -> new IllegalStateException("No notification settings found."));
-        settings.setEmailEnabled(request.isEmailEnabled());
-        settings.setRecipientEmail(request.getRecipientEmail());
+        settings.setEmailEnabled(params.isEmailEnabled());
+        settings.setRecipientEmail(params.getRecipientEmail());
         notificationSettingsRepository.save(settings);
     }
 }
