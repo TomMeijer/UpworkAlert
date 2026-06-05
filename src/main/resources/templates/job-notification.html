@@ -318,7 +318,7 @@ td {
                                                                     <tbody>
                                                                     <tr>
                                                                         <td class="text-cell-compact">
-                                                                            <div th:text="${job.description}" class="job-description">Job Description</div>
+                                                                            <div th:text="${#strings.abbreviate(job.description, 400)}" class="job-description">Job Description</div>
                                                                         </td>
                                                                     </tr>
                                                                     </tbody>
